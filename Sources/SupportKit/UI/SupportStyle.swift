@@ -1,27 +1,44 @@
 import SwiftUI
 
-public enum SupportAction: String, Identifiable, Sendable {
-    case featureSuggestion
-    case problemFeedback
-    case emailFeedback
-    case copyWeChatID
-    case xiaohongshu
-    case officialWebsite
-    case rateApp
-    case shareApp
-    case privacyPolicy
-    case termsOfUse
-    case version
+public struct SupportAction: RawRepresentable, Hashable, Identifiable, Sendable {
+    public let rawValue: String
+
+    public init(rawValue: String) {
+        self.rawValue = rawValue
+    }
 
     public var id: String { rawValue }
+
+    public static let featureSuggestion = Self(rawValue: "featureSuggestion")
+    public static let emailFeedback = Self(rawValue: "emailFeedback")
+    public static let problemFeedback = emailFeedback
+    public static let copyWeChatID = Self(rawValue: "copyWeChatID")
+    public static let xiaohongshu = Self(rawValue: "xiaohongshu")
+    public static let officialWebsite = Self(rawValue: "officialWebsite")
+    public static let rateApp = Self(rawValue: "rateApp")
+    public static let shareApp = Self(rawValue: "shareApp")
+    public static let privacyPolicy = Self(rawValue: "privacyPolicy")
+    public static let termsOfUse = Self(rawValue: "termsOfUse")
+    public static let version = Self(rawValue: "version")
 }
 
-public enum SupportAccessory: Sendable {
-    case disclosure
-    case externalLink
-    case copy
-    case share
-    case value(String)
+public struct SupportAccessory: Hashable, Sendable {
+    public let identifier: String
+    public let valueText: String?
+
+    public init(identifier: String, valueText: String? = nil) {
+        self.identifier = identifier
+        self.valueText = valueText
+    }
+
+    public static let disclosure = Self(identifier: "disclosure")
+    public static let externalLink = Self(identifier: "externalLink")
+    public static let copy = Self(identifier: "copy")
+    public static let share = Self(identifier: "share")
+
+    public static func value(_ value: String) -> Self {
+        Self(identifier: "value", valueText: value)
+    }
 }
 
 @MainActor
@@ -114,24 +131,23 @@ public struct SystemSupportStyle: SupportStyle {
 
     @ViewBuilder
     private func accessory(_ accessory: SupportAccessory) -> some View {
-        switch accessory {
-        case .disclosure:
+        if accessory == .disclosure {
             Image(systemName: "chevron.right")
                 .foregroundStyle(.tertiary)
                 .accessibilityHidden(true)
-        case .externalLink:
+        } else if accessory == .externalLink {
             Image(systemName: "arrow.up.right")
                 .foregroundStyle(.tertiary)
                 .accessibilityHidden(true)
-        case .copy:
+        } else if accessory == .copy {
             Image(systemName: "doc.on.doc")
                 .foregroundStyle(.tertiary)
                 .accessibilityHidden(true)
-        case .share:
+        } else if accessory == .share {
             Image(systemName: "square.and.arrow.up")
                 .foregroundStyle(.tertiary)
                 .accessibilityHidden(true)
-        case .value(let value):
+        } else if let value = accessory.valueText {
             Text(value)
                 .foregroundStyle(.secondary)
         }

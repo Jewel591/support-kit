@@ -64,6 +64,11 @@ Styles receive already-localized display values and package-owned action closure
 items must call `perform`; a `nil` closure denotes a read-only value such as the app version.
 URLs, mail presentation, clipboard behavior, and fallbacks remain inside the package.
 
+`SupportAction` and `SupportAccessory` are extensible value tokens. Compare known values and
+provide a fallback for unknown ones instead of exhaustively switching over package UI metadata.
+For compatibility with the original generic feedback row, Problem Feedback keeps the
+`.emailFeedback` action identity; `.problemFeedback` is an equivalent descriptive spelling.
+
 ## Fixed public destinations
 
 - Feedback: `support@weisenjoy.com`

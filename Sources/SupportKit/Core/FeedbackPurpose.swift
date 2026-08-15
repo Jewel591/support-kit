@@ -1,10 +1,24 @@
 import Foundation
 
-enum FeedbackPurpose: String, Identifiable {
+enum FeedbackPurpose: String, CaseIterable, Identifiable {
     case featureSuggestion
     case problemReport
 
     var id: String { rawValue }
+
+    var action: SupportAction {
+        switch self {
+        case .featureSuggestion: .featureSuggestion
+        case .problemReport: .problemFeedback
+        }
+    }
+
+    var suggestedSystemImage: String {
+        switch self {
+        case .featureSuggestion: "lightbulb"
+        case .problemReport: "exclamationmark.bubble"
+        }
+    }
 
     func title(locale: Locale = .current) -> String {
         switch self {

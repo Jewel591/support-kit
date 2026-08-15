@@ -89,25 +89,21 @@ public struct SupportView<Style: SupportStyle>: View {
             String(localized: $0, bundle: .module)
         }
 
+        let feedbackItems = FeedbackPurpose.allCases.map { purpose in
+            item(
+                id: purpose.action,
+                title: purpose.title(),
+                symbol: purpose.suggestedSystemImage,
+                accessory: .disclosure,
+                perform: { selectedFeedbackPurpose = purpose }
+            )
+        }
+
         var groups = [
             SupportStyleConfiguration.Group(
                 id: "contact",
                 title: localized("Contact Us"),
-                items: [
-                    item(
-                        id: .featureSuggestion,
-                        title: FeedbackPurpose.featureSuggestion.title(),
-                        symbol: "lightbulb",
-                        accessory: .disclosure,
-                        perform: { selectedFeedbackPurpose = .featureSuggestion }
-                    ),
-                    item(
-                        id: .problemFeedback,
-                        title: FeedbackPurpose.problemReport.title(),
-                        symbol: "exclamationmark.bubble",
-                        accessory: .disclosure,
-                        perform: { selectedFeedbackPurpose = .problemReport }
-                    ),
+                items: feedbackItems + [
                     item(
                         id: .copyWeChatID,
                         title: localized("Copy WeChat ID"),
