@@ -25,6 +25,7 @@ public struct SupportView<Style: SupportStyle>: View {
 
     @State private var presentedSheet: PresentedSheet?
     @State private var notice: Notice?
+    @State private var pendingMailFailure = false
 
     public init(style: Style) {
         self.style = style
@@ -34,12 +35,12 @@ public struct SupportView<Style: SupportStyle>: View {
 
     public var body: some View {
         style.makeBody(configuration: configuration)
-            .sheet(item: $presentedSheet) { sheet in
+            .sheet(item: $presentedSheet, onDismiss: handleSheetDismissal) { sheet in
                 switch sheet {
                 case .mail:
                     FeedbackMailComposer(
                         mail: FeedbackMail(app: appInfo),
-                        onFailure: showEmailFallback
+                        onFailure: { pendingMailFailure = true }
                     )
                 case .share:
                     if let appStoreURL = host?.appStoreURL {
@@ -54,6 +55,12 @@ public struct SupportView<Style: SupportStyle>: View {
                     dismissButton: .default(Text(String(localized: "OK", bundle: .module)))
                 )
             }
+    }
+
+    private func handleSheetDismissal() {
+        guard pendingMailFailure else { return }
+        pendingMailFailure = false
+        showEmailFallback()
     }
 
     private var configuration: SupportStyleConfiguration {
