@@ -25,6 +25,42 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "App 版本：" } }
       }
     },
+    "App Store reviews are public. Email is best for details and device diagnostics." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "App-Store-Rezensionen sind öffentlich. Für Details und Gerätediagnosen ist E-Mail am besten geeignet." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Las reseñas del App Store son públicas. El correo es la mejor opción para enviar detalles y diagnósticos del dispositivo." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Les avis sur l’App Store sont publics. L’e-mail est préférable pour partager des détails et des diagnostics de l’appareil." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "App Storeのレビューは公開されます。詳細やデバイス情報を送る場合はメールがおすすめです。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "App Store 리뷰는 공개됩니다. 자세한 내용과 기기 진단 정보는 이메일로 보내는 것이 좋습니다." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "As avaliações na App Store são públicas. O e-mail é a melhor opção para enviar detalhes e diagnósticos do dispositivo." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "App Store 评论是公开的。若要提供详细信息和设备诊断，建议使用邮件。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "App Store 評論是公開的。若要提供詳細資訊和裝置診斷，建議使用電郵。" } }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cancelar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Annuler" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "キャンセル" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "취소" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Cancelar" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "取消" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "取消" } }
+      }
+    },
+    "Choose a Feedback Channel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Feedback-Kanal auswählen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Elige un canal para enviar tus comentarios" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Choisissez un canal" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フィードバック方法を選択" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "피드백 방법 선택" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Escolha um canal de feedback" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "选择反馈方式" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "選擇意見回饋方式" } }
+      }
+    },
     "Contact us at support@weisenjoy.com." : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Kontakt: support@weisenjoy.com." } },
@@ -61,16 +97,16 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "複製微信 ID" } }
       }
     },
-    "Email Feedback" : {
+    "Feature Suggestions" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Feedback per E-Mail" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Enviar comentarios por correo" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Envoyer des commentaires par e-mail" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "メールでフィードバック" } },
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이메일로 피드백 보내기" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Enviar feedback por e-mail" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "邮件反馈" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "電郵意見回饋" } }
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Funktionsvorschläge" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sugerencias de funciones" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Suggestions de fonctionnalités" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "機能の提案" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기능 제안" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Sugestões de recursos" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "功能建议" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "功能建議" } }
       }
     },
     "Email Unavailable" : {
@@ -83,6 +119,18 @@
         "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "E-mail indisponível" } },
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法使用邮件" } },
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無法使用電郵" } }
+      }
+    },
+    "Describe the problem you encountered:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Beschreibe das aufgetretene Problem:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Describe el problema que encontraste:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Décrivez le problème rencontré :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "発生した問題について教えてください:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "발생한 문제를 설명해 주세요:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Descreva o problema encontrado:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请描述你遇到的问题：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "請描述你遇到的問題：" } }
       }
     },
     "Device Model:" : {
@@ -145,16 +193,16 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "好" } }
       }
     },
-    "Please describe the issue or suggestion:" : {
+    "Post Publicly on the App Store" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Problem oder Vorschlag beschreiben:" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Describe el problema o la sugerencia:" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Décrivez le problème ou votre suggestion :" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "問題や提案を入力してください:" } },
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "문제 또는 제안 사항을 설명해 주세요:" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Descreva o problema ou a sugestão:" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请描述问题或建议：" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "請描述問題或建議：" } }
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Öffentlich im App Store posten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Publicar en el App Store" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Publier sur l’App Store" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "App Storeに公開投稿" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "App Store에 공개 게시" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Publicar na App Store" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "在 App Store 公开留言" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "在 App Store 公開留言" } }
       }
     },
     "Privacy Policy" : {
@@ -169,16 +217,40 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "隱私權政策" } }
       }
     },
-    "Rate This App" : {
+    "Problem Feedback" : {
       "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese App bewerten" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Calificar esta app" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Noter cette app" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "このアプリを評価" } },
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이 앱 평가하기" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Avaliar este app" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "评价这个 App" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "為此 App 評分" } }
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Problem melden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Informar de un problema" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Signaler un problème" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "問題を報告" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "문제 피드백" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Informar um problema" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "问题反馈" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "問題回饋" } }
+      }
+    },
+    "Give Us a 5-Star Rating" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gib uns 5 Sterne" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Danos 5 estrellas" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Donnez-nous 5 étoiles" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "星5つで評価する" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "별 5개로 평가해 주세요" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Avalie-nos com 5 estrelas" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "给我们 5 星好评" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "給我們 5 星好評" } }
+      }
+    },
+    "Send Feedback by Email" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Feedback per E-Mail senden" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Enviar comentarios por correo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Envoyer par e-mail" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "メールでフィードバック" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이메일로 피드백 보내기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Enviar feedback por e-mail" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "通过邮件反馈" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "透過電郵提供意見" } }
       }
     },
     "Share This App" : {
@@ -229,6 +301,18 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "系統版本：" } }
       }
     },
+    "Tell us what you would like to see:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Welche Funktion wünschst du dir?" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Cuéntanos qué te gustaría ver:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Dites-nous ce que vous aimeriez voir :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "追加してほしい機能を教えてください:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "원하는 기능을 알려 주세요:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Conte o que você gostaria de ver:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请告诉我们你希望新增什么功能：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "請告訴我們你希望新增什麼功能：" } }
+      }
+    },
     "Terms of Use" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzungsbedingungen" } },
@@ -239,18 +323,6 @@
         "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Termos de Uso" } },
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "使用条款" } },
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "使用條款" } }
-      }
-    },
-    "User Feedback" : {
-      "localizations" : {
-        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzerfeedback" } },
-        "es" : { "stringUnit" : { "state" : "translated", "value" : "Comentarios de usuarios" } },
-        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Commentaires" } },
-        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ユーザーフィードバック" } },
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "사용자 피드백" } },
-        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Feedback do usuário" } },
-        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "用户反馈" } },
-        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "使用者意見回饋" } }
       }
     },
     "Version" : {

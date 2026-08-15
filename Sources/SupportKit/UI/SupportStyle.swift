@@ -1,6 +1,8 @@
 import SwiftUI
 
 public enum SupportAction: String, Identifiable, Sendable {
+    case featureSuggestion
+    case problemFeedback
     case emailFeedback
     case copyWeChatID
     case xiaohongshu
@@ -15,6 +17,7 @@ public enum SupportAction: String, Identifiable, Sendable {
 }
 
 public enum SupportAccessory: Sendable {
+    case disclosure
     case externalLink
     case copy
     case share
@@ -112,6 +115,10 @@ public struct SystemSupportStyle: SupportStyle {
     @ViewBuilder
     private func accessory(_ accessory: SupportAccessory) -> some View {
         switch accessory {
+        case .disclosure:
+            Image(systemName: "chevron.right")
+                .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
         case .externalLink:
             Image(systemName: "arrow.up.right")
                 .foregroundStyle(.tertiary)

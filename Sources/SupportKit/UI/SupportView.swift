@@ -26,6 +26,9 @@ public struct SupportView<Style: SupportStyle>: View {
     @State private var presentedSheet: PresentedSheet?
     @State private var notice: Notice?
     @State private var pendingMailFailure = false
+    @State private var selectedFeedbackPurpose: FeedbackPurpose?
+    @State private var mailPurpose = FeedbackPurpose.problemReport
+    @State private var queuedMailPurpose: FeedbackPurpose?
 
     public init(style: Style) {
         self.style = style
@@ -39,7 +42,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 switch sheet {
                 case .mail:
                     FeedbackMailComposer(
-                        mail: FeedbackMail(app: appInfo),
+                        mail: FeedbackMail(app: appInfo, purpose: mailPurpose),
                         onFailure: { pendingMailFailure = true }
                     )
                 case .share:
@@ -54,6 +57,24 @@ public struct SupportView<Style: SupportStyle>: View {
                     message: Text(notice.message),
                     dismissButton: .default(Text(String(localized: "OK", bundle: .module)))
                 )
+            }
+            .confirmationDialog(
+                SupportCopy.chooseFeedbackChannel,
+                isPresented: isChoosingFeedbackChannel,
+                titleVisibility: .visible,
+                presenting: selectedFeedbackPurpose
+            ) { purpose in
+                if let reviewURL = host?.reviewURL {
+                    Button(SupportCopy.appStorePublicReview) {
+                        open(reviewURL)
+                    }
+                }
+                Button(SupportCopy.emailFeedback) {
+                    queuedMailPurpose = purpose
+                }
+                Button(SupportCopy.cancel, role: .cancel) {}
+            } message: { _ in
+                Text(SupportCopy.feedbackChannelExplanation)
             }
     }
 
@@ -74,11 +95,18 @@ public struct SupportView<Style: SupportStyle>: View {
                 title: localized("Contact Us"),
                 items: [
                     item(
-                        id: .emailFeedback,
-                        title: localized("Email Feedback"),
-                        symbol: "envelope",
-                        accessory: .externalLink,
-                        perform: presentEmail
+                        id: .featureSuggestion,
+                        title: FeedbackPurpose.featureSuggestion.title(),
+                        symbol: "lightbulb",
+                        accessory: .disclosure,
+                        perform: { selectedFeedbackPurpose = .featureSuggestion }
+                    ),
+                    item(
+                        id: .problemFeedback,
+                        title: FeedbackPurpose.problemReport.title(),
+                        symbol: "exclamationmark.bubble",
+                        accessory: .disclosure,
+                        perform: { selectedFeedbackPurpose = .problemReport }
                     ),
                     item(
                         id: .copyWeChatID,
@@ -119,7 +147,7 @@ public struct SupportView<Style: SupportStyle>: View {
                     items: [
                         item(
                             id: .rateApp,
-                            title: localized("Rate This App"),
+                            title: SupportCopy.fiveStarRating,
                             symbol: "star",
                             accessory: .externalLink,
                             perform: { open(host.reviewURL) }
@@ -188,12 +216,30 @@ public struct SupportView<Style: SupportStyle>: View {
         )
     }
 
-    private func presentEmail() {
+    private var isChoosingFeedbackChannel: Binding<Bool> {
+        Binding(
+            get: { selectedFeedbackPurpose != nil },
+            set: { isPresented in
+                if !isPresented {
+                    selectedFeedbackPurpose = nil
+                    guard let purpose = queuedMailPurpose else { return }
+                    queuedMailPurpose = nil
+                    Task { @MainActor in
+                        await Task.yield()
+                        presentEmail(for: purpose)
+                    }
+                }
+            }
+        )
+    }
+
+    private func presentEmail(for purpose: FeedbackPurpose) {
+        mailPurpose = purpose
         if MFMailComposeViewController.canSendMail() {
             presentedSheet = .mail
             return
         }
-        guard let url = FeedbackMail(app: appInfo).mailtoURL else {
+        guard let url = FeedbackMail(app: appInfo, purpose: purpose).mailtoURL else {
             showEmailFallback()
             return
         }

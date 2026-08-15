@@ -25,7 +25,9 @@ NavigationLink("Contact Us") {
 ```
 
 The standard style uses native `List` and `Section` components without decorative leading
-icons on the secondary support page.
+icons on the secondary support page. It presents separate Feature Suggestions and Problem
+Feedback entries; each lets the user choose between a public App Store review and a private
+email with the appropriate subject, prompt, and device diagnostics.
 
 ## Custom UI
 
