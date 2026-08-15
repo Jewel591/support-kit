@@ -39,6 +39,8 @@ struct SupportViewPublicAPITests {
 
         #expect(recorder.actions.contains(.featureSuggestion))
         #expect(recorder.actions.contains(.privacyPolicy))
+
+        let _: SupportView<SystemSupportStyle> = SupportView()
     }
 }
 
