@@ -22,9 +22,13 @@ enum SupportCopy {
     }
 
     static var feedbackChannelExplanation: String {
-        String(
-            localized: "App Store reviews are public. Email is best for details and device diagnostics.",
-            bundle: .module
+        feedbackChannelExplanation(locale: .current)
+    }
+
+    static func feedbackChannelExplanation(locale: Locale) -> String {
+        SupportLocalization.string(
+            "We regularly read and respond to App Store reviews. Email is best for details and device diagnostics.",
+            locale: locale
         )
     }
 

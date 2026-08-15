@@ -15,7 +15,7 @@ enum FeedbackPurpose: String, CaseIterable, Identifiable {
 
     var suggestedSystemImage: String {
         switch self {
-        case .featureSuggestion: "lightbulb"
+        case .featureSuggestion: "sparkles"
         case .problemReport: "exclamationmark.bubble"
         }
     }

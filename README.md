@@ -63,6 +63,14 @@ SupportKit.SupportView(style: BrandSupportStyle())
 Styles receive already-localized display values and package-owned action closures. Interactive
 items must call `perform`; a `nil` closure denotes a read-only value such as the app version.
 URLs, mail presentation, clipboard behavior, and fallbacks remain inside the package.
+Styles can render `suggestedIcon` to use package-owned brand artwork while retaining full
+control over sizing and layout. `suggestedSystemImage` remains available as a fallback.
+
+Each item also exposes `recommendedPlacement`. Feedback, rating, sharing, WeChat, and
+Xiaohongshu are recommended for `.primary` placement; website, legal links, and version are
+recommended for `.secondary` placement. This is information-hierarchy guidance rather than a
+navigation requirement: host styles may override it, and unknown future actions default to the
+secondary level.
 
 `SupportAction` and `SupportAccessory` are extensible value tokens. Compare known values and
 provide a fallback for unknown ones instead of exhaustively switching over package UI metadata.
@@ -82,8 +90,8 @@ without an explicit host migration.
 
 - Feedback: `support@weisenjoy.com`
 - WeChat: `ivensliao007`
-- Xiaohongshu: the studio's public profile
-- Website: `https://www.weisenjoy.com/`
+- Xiaohongshu: Ivens' public profile
+- Website: reserved but hidden while the new site is under construction
 - Privacy: `https://www.weisenjoy.com/privacy`
 - Terms: Apple's standard EULA
 

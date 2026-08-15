@@ -103,34 +103,37 @@ public struct SupportView<Style: SupportStyle>: View {
             SupportStyleConfiguration.Group(
                 id: "contact",
                 title: localized("Contact Us"),
-                items: feedbackItems + [
-                    item(
-                        id: .copyWeChatID,
-                        title: localized("Copy WeChat ID"),
-                        symbol: "doc.on.doc",
-                        accessory: .copy,
-                        perform: copyWeChatID
-                    ),
-                ]
+                items: feedbackItems
             ),
             SupportStyleConfiguration.Group(
                 id: "follow",
                 title: localized("Follow Us"),
                 items: [
                     item(
+                        id: .copyWeChatID,
+                        title: localized("Copy WeChat ID"),
+                        symbol: "doc.on.doc",
+                        icon: Image("WeChatIcon", bundle: .module),
+                        accessory: .copy,
+                        perform: copyWeChatID
+                    ),
+                    item(
                         id: .xiaohongshu,
                         title: localized("Xiaohongshu"),
                         symbol: "heart",
+                        icon: Image("XiaohongshuIcon", bundle: .module),
                         accessory: .externalLink,
                         perform: openXiaohongshu
                     ),
-                    item(
-                        id: .officialWebsite,
-                        title: localized("Official Website"),
-                        symbol: "globe",
-                        accessory: .externalLink,
-                        perform: { open(SupportConstants.studioWebsite) }
-                    ),
+                    // The official website is being rebuilt and is not public yet.
+                    // Restore this item when the new site launches.
+                    // item(
+                    //     id: .officialWebsite,
+                    //     title: localized("Official Website"),
+                    //     symbol: "globe",
+                    //     accessory: .externalLink,
+                    //     perform: { open(SupportConstants.studioWebsite) }
+                    // ),
                 ]
             ),
         ]
@@ -200,13 +203,16 @@ public struct SupportView<Style: SupportStyle>: View {
         id: SupportAction,
         title: String,
         symbol: String,
+        icon: Image? = nil,
         accessory: SupportAccessory,
         perform: (@MainActor () -> Void)?
     ) -> SupportStyleConfiguration.Item {
         SupportStyleConfiguration.Item(
             id: id,
             title: title,
+            suggestedIcon: icon ?? Image(systemName: symbol),
             suggestedSystemImage: symbol,
+            recommendedPlacement: id.recommendedPlacement,
             accessory: accessory,
             perform: perform
         )

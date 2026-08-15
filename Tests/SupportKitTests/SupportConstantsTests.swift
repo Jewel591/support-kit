@@ -19,11 +19,11 @@ struct SupportConstantsTests {
     func xiaohongshuDestinations() {
         #expect(
             SupportConstants.xiaohongshuApp?.absoluteString
-                == "xhsdiscover://user/60c7398e0000000001005786"
+                == "xhsdiscover://user/6543a268000000000301f574"
         )
         #expect(
             SupportConstants.xiaohongshuWeb?.absoluteString
-                == "https://www.xiaohongshu.com/user/profile/60c7398e0000000001005786"
+                == "https://www.xiaohongshu.com/user/profile/6543a268000000000301f574"
         )
     }
 }
