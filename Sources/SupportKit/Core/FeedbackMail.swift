@@ -5,20 +5,20 @@ struct FeedbackMail: Equatable {
     let subject: String
     let body: String
 
-    init(app: SupportAppInfo) {
+    init(app: SupportAppInfo, locale: Locale = .current) {
         recipient = SupportConstants.feedbackEmail
         subject = "[\(app.name) \(app.version)] "
-            + String(localized: "User Feedback", bundle: .module)
+            + String(localized: "User Feedback", bundle: .module, locale: locale)
         body = """
-        \(String(localized: "Please describe the issue or suggestion:", bundle: .module))
+        \(String(localized: "Please describe the issue or suggestion:", bundle: .module, locale: locale))
 
 
 
         ----------------------------
-        App Version: \(app.version) (\(app.build))
-        System Version: \(app.systemVersion)
-        Device Model: \(app.hardwareModel)
-        Language/Region: \(app.localeIdentifier)
+        \(String(localized: "App Version:", bundle: .module, locale: locale)) \(app.version) (\(app.build))
+        \(String(localized: "System Version:", bundle: .module, locale: locale)) \(app.systemVersion)
+        \(String(localized: "Device Model:", bundle: .module, locale: locale)) \(app.hardwareModel)
+        \(String(localized: "Language/Region:", bundle: .module, locale: locale)) \(app.localeIdentifier)
         """
     }
 

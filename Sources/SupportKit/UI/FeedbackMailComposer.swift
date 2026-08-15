@@ -6,6 +6,7 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss
 
     let mail: FeedbackMail
+    let onFailure: @MainActor () -> Void
 
     func makeUIViewController(context: Context) -> MFMailComposeViewController {
         let controller = MFMailComposeViewController()
@@ -22,15 +23,20 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
     ) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(dismiss: dismiss)
+        Coordinator(dismiss: dismiss, onFailure: onFailure)
     }
 
     @MainActor
     final class Coordinator: NSObject, @preconcurrency MFMailComposeViewControllerDelegate {
         private let dismiss: DismissAction
+        private let onFailure: @MainActor () -> Void
 
-        init(dismiss: DismissAction) {
+        init(
+            dismiss: DismissAction,
+            onFailure: @escaping @MainActor () -> Void
+        ) {
             self.dismiss = dismiss
+            self.onFailure = onFailure
         }
 
         func mailComposeController(
@@ -39,6 +45,16 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
             error: Error?
         ) {
             dismiss()
+            if Self.shouldOfferFallback(result: result, error: error) {
+                onFailure()
+            }
+        }
+
+        static func shouldOfferFallback(
+            result: MFMailComposeResult,
+            error: Error?
+        ) -> Bool {
+            result == .failed || error != nil
         }
     }
 }

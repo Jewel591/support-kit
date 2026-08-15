@@ -13,6 +13,18 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "關於" } }
       }
     },
+    "App Version:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "App-Version:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión de la app:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version de l’app :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Appのバージョン:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "앱 버전:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Versão do app:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "App 版本：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "App 版本：" } }
+      }
+    },
     "Contact us at support@weisenjoy.com." : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Kontakt: support@weisenjoy.com." } },
@@ -73,6 +85,18 @@
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無法使用電郵" } }
       }
     },
+    "Device Model:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerätemodell:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Modelo del dispositivo:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modèle de l’appareil :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "デバイスモデル:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기기 모델:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Modelo do dispositivo:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "设备型号：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "裝置型號：" } }
+      }
+    },
     "Follow Us" : {
       "localizations" : {
         "de" : { "stringUnit" : { "state" : "translated", "value" : "Folge uns" } },
@@ -95,6 +119,18 @@
         "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Site oficial" } },
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "官方网站" } },
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "官方網站" } }
+      }
+    },
+    "Language/Region:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sprache/Region:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Idioma/región:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Langue/région :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "言語/地域:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "언어/지역:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Idioma/região:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "语言/地区：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "語言/地區：" } }
       }
     },
     "OK" : {
@@ -179,6 +215,18 @@
         "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Apoie este app" } },
         "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "支持这个 App" } },
         "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "支持此 App" } }
+      }
+    },
+    "System Version:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Systemversion:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión del sistema:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version du système :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "システムバージョン:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "시스템 버전:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Versão do sistema:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "系统版本：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "系統版本：" } }
       }
     },
     "Terms of Use" : {

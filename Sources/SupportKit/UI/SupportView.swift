@@ -37,7 +37,10 @@ public struct SupportView<Style: SupportStyle>: View {
             .sheet(item: $presentedSheet) { sheet in
                 switch sheet {
                 case .mail:
-                    FeedbackMailComposer(mail: FeedbackMail(app: appInfo))
+                    FeedbackMailComposer(
+                        mail: FeedbackMail(app: appInfo),
+                        onFailure: showEmailFallback
+                    )
                 case .share:
                     if let appStoreURL = host?.appStoreURL {
                         SupportActivityView(items: [appStoreURL])
