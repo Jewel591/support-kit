@@ -25,7 +25,9 @@ NavigationLink("Contact Us") {
 ```
 
 The standard style uses native `List` and `Section` components without decorative leading
-icons on the secondary support page.
+icons on the secondary support page. It presents separate Feature Suggestions and Problem
+Feedback entries; each lets the user choose between a public App Store review and a private
+email with the appropriate subject, prompt, and device diagnostics.
 
 ## Custom UI
 
@@ -61,6 +63,20 @@ SupportKit.SupportView(style: BrandSupportStyle())
 Styles receive already-localized display values and package-owned action closures. Interactive
 items must call `perform`; a `nil` closure denotes a read-only value such as the app version.
 URLs, mail presentation, clipboard behavior, and fallbacks remain inside the package.
+
+`SupportAction` and `SupportAccessory` are extensible value tokens. Compare known values and
+provide a fallback for unknown ones instead of exhaustively switching over package UI metadata.
+For compatibility with the original generic feedback row, Problem Feedback keeps the
+`.emailFeedback` action identity; `.problemFeedback` is an equivalent descriptive spelling.
+
+### Migrating from 0.1.x
+
+Version 1.0 replaces the original closed `SupportAction` and `SupportAccessory` enums with the
+extensible tokens above. Apps that only construct `SupportView()` need no source changes.
+Custom styles should replace exhaustive enum switches and associated-value matching with token
+comparisons, read `valueText` for value accessories, and provide a fallback for future tokens.
+This change is released as a new major version so existing `0.1.x` package ranges do not adopt it
+without an explicit host migration.
 
 ## Fixed public destinations
 
