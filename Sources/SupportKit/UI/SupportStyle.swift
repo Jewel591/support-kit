@@ -86,7 +86,11 @@ public struct SupportStyleConfiguration {
     public struct Item: Identifiable {
         public let id: SupportAction
         public let title: String
-        /// A package-owned icon that custom styles can size and shape for their UI.
+        /// A package-owned icon prepared for custom styles to place in a bounded frame.
+        ///
+        /// SF Symbols remain template images and respond to `font` and `foregroundStyle`.
+        /// Full-color brand artwork is already original-rendered and resizable, so custom
+        /// styles should not force a rendering mode or call `resizable()` themselves.
         public let suggestedIcon: Image
         public let suggestedSystemImage: String
         public let recommendedPlacement: SupportPlacement

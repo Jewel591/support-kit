@@ -133,7 +133,9 @@ public struct SupportView<Style: SupportStyle>: View {
                         id: .copyWeChatID,
                         title: localized("Copy WeChat ID"),
                         symbol: "doc.on.doc",
-                        icon: Image("WeChatIcon", bundle: .module),
+                        icon: Image("WeChatIcon", bundle: .module)
+                            .renderingMode(.original)
+                            .resizable(),
                         accessory: .copy,
                         perform: copyWeChatID
                     ),
@@ -141,7 +143,9 @@ public struct SupportView<Style: SupportStyle>: View {
                         id: .xiaohongshu,
                         title: localized("Xiaohongshu"),
                         symbol: "heart",
-                        icon: Image("XiaohongshuIcon", bundle: .module),
+                        icon: Image("XiaohongshuIcon", bundle: .module)
+                            .renderingMode(.original)
+                            .resizable(),
                         accessory: .externalLink,
                         perform: openXiaohongshu
                     ),
