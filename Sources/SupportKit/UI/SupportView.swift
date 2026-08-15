@@ -20,6 +20,7 @@ public struct SupportView<Style: SupportStyle>: View {
     @Environment(\.openURL) private var openURL
 
     private let style: Style
+    private let placement: SupportPlacement?
     private let appInfo: SupportAppInfo
     private let host: SupportHost?
 
@@ -30,14 +31,28 @@ public struct SupportView<Style: SupportStyle>: View {
     @State private var mailPurpose = FeedbackPurpose.problemReport
     @State private var queuedMailPurpose: FeedbackPurpose?
 
+    @available(
+        *,
+        deprecated,
+        message: "Render explicit .primary and .secondary SupportView placements."
+    )
     public init(style: Style) {
+        self.init(placement: nil, style: style)
+    }
+
+    public init(placement: SupportPlacement, style: Style) {
+        self.init(placement: Optional(placement), style: style)
+    }
+
+    private init(placement: SupportPlacement?, style: Style) {
+        self.placement = placement
         self.style = style
         appInfo = .current
         host = SupportHostCatalog.currentHost
     }
 
     public var body: some View {
-        style.makeBody(configuration: configuration)
+        style.makeBody(configuration: presentedConfiguration)
             .sheet(item: $presentedSheet, onDismiss: handleSheetDismissal) { sheet in
                 switch sheet {
                 case .mail:
@@ -76,6 +91,11 @@ public struct SupportView<Style: SupportStyle>: View {
             } message: { _ in
                 Text(SupportCopy.feedbackChannelExplanation)
             }
+    }
+
+    private var presentedConfiguration: SupportStyleConfiguration {
+        guard let placement else { return configuration }
+        return configuration.filtered(to: placement)
     }
 
     private func handleSheetDismissal() {
@@ -293,7 +313,16 @@ public struct SupportView<Style: SupportStyle>: View {
 }
 
 public extension SupportView where Style == SystemSupportStyle {
+    @available(
+        *,
+        deprecated,
+        message: "Render explicit .primary and .secondary SupportView placements."
+    )
     init() {
-        self.init(style: SystemSupportStyle())
+        self.init(placement: nil, style: SystemSupportStyle())
+    }
+
+    init(placement: SupportPlacement) {
+        self.init(placement: placement, style: SystemSupportStyle())
     }
 }

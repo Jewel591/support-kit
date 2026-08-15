@@ -21,9 +21,8 @@ public struct SupportAction: RawRepresentable, Hashable, Identifiable, Sendable 
     public static let termsOfUse = Self(rawValue: "termsOfUse")
     public static let version = Self(rawValue: "version")
 
-    /// The package's recommended information-hierarchy placement for this action.
+    /// The package-owned information-hierarchy placement for this action.
     ///
-    /// Hosts may override this recommendation to fit their own settings structure.
     /// Unknown future actions default to the secondary level so package updates do not
     /// unexpectedly add prominent rows to an app's root settings page.
     public var recommendedPlacement: SupportPlacement {
@@ -44,10 +43,10 @@ public struct SupportPlacement: RawRepresentable, Hashable, Sendable {
         self.rawValue = rawValue
     }
 
-    /// Recommended for important actions shown directly on the host settings page.
+    /// Important actions shown directly on the host settings page.
     public static let primary = Self(rawValue: "primary")
 
-    /// Recommended for lower-frequency actions shown on a secondary support/about page.
+    /// Lower-frequency actions shown on a secondary support/about page.
     public static let secondary = Self(rawValue: "secondary")
 }
 
@@ -119,6 +118,25 @@ public struct SupportStyleConfiguration {
     init(navigationTitle: String, groups: [Group]) {
         self.navigationTitle = navigationTitle
         self.groups = groups
+    }
+
+    func filtered(to placement: SupportPlacement) -> Self {
+        let matchingGroups: [Group] = groups.compactMap { group -> Group? in
+            let matchingItems = group.items.filter {
+                $0.recommendedPlacement == placement
+            }
+            guard !matchingItems.isEmpty else { return nil }
+            return Group(
+                id: group.id,
+                title: group.title,
+                items: matchingItems
+            )
+        }
+
+        return Self(
+            navigationTitle: navigationTitle,
+            groups: matchingGroups
+        )
     }
 }
 
