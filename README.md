@@ -12,22 +12,35 @@ exact version, branch, or revision. App and Xcode Cloud projects should commit t
 `Package.resolved` file for reproducible builds; the dependency declaration must still remain
 an automatically compatible version range.
 
-## Standard UI
+## Placement
 
-The host owns the settings row and navigation placement:
+The host owns settings layout, while the package owns each action and its placement
+classification. Render `.primary` actions directly on the host's first-level settings page,
+then render `.secondary` actions on a separate support page:
 
 ```swift
 import SupportKit
 
-NavigationLink("Contact Us") {
-    SupportKit.SupportView()
+SupportKit.SupportView(
+    placement: .primary,
+    style: AppSettingsSupportStyle()
+)
+
+NavigationLink("Support") {
+    SupportKit.SupportView(placement: .secondary)
 }
 ```
 
-The standard style uses native `List` and `Section` components without decorative leading
-icons on the secondary support page. It presents separate Feature Suggestions and Problem
-Feedback entries; each lets the user choose between a public App Store review and a private
-email with the appropriate subject, prompt, and device diagnostics.
+`SupportView(placement:)` filters groups before handing them to the style and removes empty
+groups. Styles therefore render only the requested level and do not duplicate package action
+catalogs or placement logic. The unfiltered `SupportView()` initializer remains temporarily
+available for source compatibility but is deprecated; new integrations must construct both
+explicit placements.
+
+The default `SystemSupportStyle` uses native `List` and `Section` components without decorative
+leading icons on the secondary support page. Feature Suggestions and Problem Feedback are
+separate primary actions; each lets the user choose between a public App Store review and a
+private email with the appropriate subject, prompt, and device diagnostics.
 
 ## Custom UI
 
@@ -57,7 +70,10 @@ struct BrandSupportStyle: SupportStyle {
     }
 }
 
-SupportKit.SupportView(style: BrandSupportStyle())
+SupportKit.SupportView(
+    placement: .secondary,
+    style: BrandSupportStyle()
+)
 ```
 
 Styles receive already-localized display values and package-owned action closures. Interactive
@@ -67,10 +83,16 @@ Styles can render `suggestedIcon` to use package-owned brand artwork while retai
 control over sizing and layout. `suggestedSystemImage` remains available as a fallback.
 
 Each item also exposes `recommendedPlacement`. Feedback, rating, sharing, WeChat, and
-Xiaohongshu are recommended for `.primary` placement; website, legal links, and version are
-recommended for `.secondary` placement. This is information-hierarchy guidance rather than a
-navigation requirement: host styles may override it, and unknown future actions default to the
-secondary level.
+Xiaohongshu belong to `.primary`; website, legal links, and version belong to `.secondary`.
+Unknown future actions default to the secondary level so package updates cannot silently add a
+new first-level settings action.
+
+### Migrating from 1.1.x
+
+Replace the unfiltered `SupportView()` with two explicit surfaces: render
+`SupportView(placement: .primary, style: ...)` in the first-level settings page and navigate to
+`SupportView(placement: .secondary)` for the remaining support information. The package keeps
+the action catalog and placement split consistent across both surfaces.
 
 `SupportAction` and `SupportAccessory` are extensible value tokens. Compare known values and
 provide a fallback for unknown ones instead of exhaustively switching over package UI metadata.

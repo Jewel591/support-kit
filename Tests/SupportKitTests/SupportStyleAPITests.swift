@@ -1,3 +1,4 @@
+import SwiftUI
 import Testing
 @testable import SupportKit
 
@@ -54,5 +55,57 @@ struct SupportStyleAPITests {
         ]
 
         #expect(secondaryActions.allSatisfy { $0.recommendedPlacement == .secondary })
+    }
+
+    @MainActor
+    @Test("Placement filtering keeps matching items and removes empty groups")
+    func placementFiltering() {
+        let configuration = SupportStyleConfiguration(
+            navigationTitle: "Support",
+            groups: [
+                .init(
+                    id: "contact",
+                    title: "Contact Us",
+                    items: [
+                        item(id: .featureSuggestion),
+                        item(id: .privacyPolicy),
+                    ]
+                ),
+                .init(
+                    id: "primary-only",
+                    title: "Primary",
+                    items: [item(id: .problemFeedback)]
+                ),
+            ]
+        )
+
+        let primary = configuration.filtered(to: .primary)
+        let secondary = configuration.filtered(to: .secondary)
+
+        let primaryGroupIDs = primary.groups.map { $0.id }
+        let primaryItemIDs = primary.groups.flatMap { $0.items }.map { $0.id }
+        let secondaryGroupIDs = secondary.groups.map { $0.id }
+        let secondaryItemIDs = secondary.groups.flatMap { $0.items }.map { $0.id }
+
+        #expect(primaryGroupIDs == ["contact", "primary-only"])
+        #expect(
+            primaryItemIDs
+                == [SupportAction.featureSuggestion, SupportAction.problemFeedback]
+        )
+        #expect(secondaryGroupIDs == ["contact"])
+        #expect(secondaryItemIDs == [SupportAction.privacyPolicy])
+    }
+
+    @MainActor
+    private func item(id: SupportAction) -> SupportStyleConfiguration.Item {
+        SupportStyleConfiguration.Item(
+            id: id,
+            title: id.rawValue,
+            suggestedIcon: Image(systemName: "questionmark"),
+            suggestedSystemImage: "questionmark",
+            recommendedPlacement: id.recommendedPlacement,
+            accessory: .disclosure,
+            perform: {}
+        )
     }
 }
