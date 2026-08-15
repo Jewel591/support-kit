@@ -73,10 +73,10 @@ struct SupportViewPublicAPITests {
                     "The fitted WeChat artwork should show its green edge, not its white center"
                 )
             } else {
-                let pixel = try rgbaPixel(atX: 4, y: 4, in: image)
+                let pixel = try rgbaPixel(atX: 8, y: 13, in: image)
                 #expect(
-                    pixel.red > 200 && pixel.green < 100 && pixel.blue < 130,
-                    "The fitted Xiaohongshu artwork should show its red corner, not its white center"
+                    pixel.red > 220 && pixel.green > 220 && pixel.blue > 220,
+                    "The fitted Xiaohongshu artwork should show its white lettering, not a cropped red field"
                 )
             }
         }
