@@ -69,6 +69,15 @@ provide a fallback for unknown ones instead of exhaustively switching over packa
 For compatibility with the original generic feedback row, Problem Feedback keeps the
 `.emailFeedback` action identity; `.problemFeedback` is an equivalent descriptive spelling.
 
+### Migrating from 0.1.x
+
+Version 1.0 replaces the original closed `SupportAction` and `SupportAccessory` enums with the
+extensible tokens above. Apps that only construct `SupportView()` need no source changes.
+Custom styles should replace exhaustive enum switches and associated-value matching with token
+comparisons, read `valueText` for value accessories, and provide a fallback for future tokens.
+This change is released as a new major version so existing `0.1.x` package ranges do not adopt it
+without an explicit host migration.
+
 ## Fixed public destinations
 
 - Feedback: `support@weisenjoy.com`
