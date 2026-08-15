@@ -79,8 +79,22 @@ SupportKit.SupportView(
 Styles receive already-localized display values and package-owned action closures. Interactive
 items must call `perform`; a `nil` closure denotes a read-only value such as the app version.
 URLs, mail presentation, clipboard behavior, and fallbacks remain inside the package.
-Styles can render `suggestedIcon` to use package-owned brand artwork while retaining full
-control over sizing and layout. `suggestedSystemImage` remains available as a fallback.
+Styles should render `suggestedIcon` directly to use package-owned symbols and brand artwork
+while retaining control over its bounded frame and surrounding layout:
+
+```swift
+item.suggestedIcon
+    .font(.title3)
+    .foregroundStyle(.tint)
+    .frame(width: 36, height: 36)
+```
+
+`suggestedIcon` is prepared by SupportKit for this uniform call site: SF Symbols remain template
+images and respond to `font` / `foregroundStyle`, while full-color brand artwork is already
+original-rendered and resizable. Do not call `.resizable()` or force `.renderingMode(.template)`
+in a custom style; doing so either enlarges SF Symbols unexpectedly or destroys brand colors.
+`suggestedSystemImage` remains available only as a fallback when an app intentionally chooses
+not to display package-owned brand artwork.
 
 Each item also exposes `recommendedPlacement`. Feedback, rating, sharing, WeChat, and
 Xiaohongshu belong to `.primary`; website, legal links, and version belong to `.secondary`.
