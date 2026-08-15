@@ -1,0 +1,16 @@
+# reason: OK is the standard platform confirmation label in these locales.
+{"catalog":"Localizable.xcstrings","locale":"de","key":"OK","leaf":"/stringUnit","value":"OK"}
+{"catalog":"Localizable.xcstrings","locale":"fr","key":"OK","leaf":"/stringUnit","value":"OK"}
+{"catalog":"Localizable.xcstrings","locale":"ja","key":"OK","leaf":"/stringUnit","value":"OK"}
+{"catalog":"Localizable.xcstrings","locale":"pt-BR","key":"OK","leaf":"/stringUnit","value":"OK"}
+
+# reason: These established technical nouns use the same spelling in German or French.
+{"catalog":"Localizable.xcstrings","locale":"de","key":"Support","leaf":"/stringUnit","value":"Support"}
+{"catalog":"Localizable.xcstrings","locale":"de","key":"Version","leaf":"/stringUnit","value":"Version"}
+{"catalog":"Localizable.xcstrings","locale":"fr","key":"Version","leaf":"/stringUnit","value":"Version"}
+
+# reason: Xiaohongshu is the public service brand name in these Latin-script locales.
+{"catalog":"Localizable.xcstrings","locale":"de","key":"Xiaohongshu","leaf":"/stringUnit","value":"Xiaohongshu"}
+{"catalog":"Localizable.xcstrings","locale":"es","key":"Xiaohongshu","leaf":"/stringUnit","value":"Xiaohongshu"}
+{"catalog":"Localizable.xcstrings","locale":"fr","key":"Xiaohongshu","leaf":"/stringUnit","value":"Xiaohongshu"}
+{"catalog":"Localizable.xcstrings","locale":"pt-BR","key":"Xiaohongshu","leaf":"/stringUnit","value":"Xiaohongshu"}

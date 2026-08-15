@@ -1,0 +1,294 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "About" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "À propos" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "情報" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "정보" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Sobre" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "关于" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "關於" } }
+      }
+    },
+    "App Version:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "App-Version:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión de la app:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version de l’app :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Appのバージョン:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "앱 버전:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Versão do app:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "App 版本：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "App 版本：" } }
+      }
+    },
+    "Contact us at support@weisenjoy.com." : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kontakt: support@weisenjoy.com." } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contáctanos en support@weisenjoy.com." } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Contactez-nous à l’adresse support@weisenjoy.com." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "support@weisenjoy.comまでご連絡ください。" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "support@weisenjoy.com으로 문의해 주세요." } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Fale conosco pelo e-mail support@weisenjoy.com." } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请通过 support@weisenjoy.com 联系我们。" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "請透過 support@weisenjoy.com 聯絡我們。" } }
+      }
+    },
+    "Contact Us" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kontakt" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Contáctanos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nous contacter" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "お問い合わせ" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "문의하기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Fale conosco" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "联系我们" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "聯絡我們" } }
+      }
+    },
+    "Copy WeChat ID" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "WeChat-ID kopieren" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Copiar ID de WeChat" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Copier l’identifiant WeChat" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "WeChat IDをコピー" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "WeChat ID 복사" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Copiar ID do WeChat" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "复制微信号" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "複製微信 ID" } }
+      }
+    },
+    "Email Feedback" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Feedback per E-Mail" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Enviar comentarios por correo" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Envoyer des commentaires par e-mail" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "メールでフィードバック" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이메일로 피드백 보내기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Enviar feedback por e-mail" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "邮件反馈" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "電郵意見回饋" } }
+      }
+    },
+    "Email Unavailable" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "E-Mail nicht verfügbar" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Correo no disponible" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "E-mail indisponible" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "メールを利用できません" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이메일을 사용할 수 없음" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "E-mail indisponível" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "无法使用邮件" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "無法使用電郵" } }
+      }
+    },
+    "Device Model:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerätemodell:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Modelo del dispositivo:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Modèle de l’appareil :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "デバイスモデル:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기기 모델:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Modelo do dispositivo:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "设备型号：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "裝置型號：" } }
+      }
+    },
+    "Follow Us" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Folge uns" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Síguenos" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Nous suivre" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フォロー" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "팔로우하기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Siga-nos" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "关注我们" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "關注我們" } }
+      }
+    },
+    "Official Website" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Offizielle Website" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Sitio web oficial" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Site web officiel" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "公式Webサイト" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "공식 웹사이트" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Site oficial" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "官方网站" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "官方網站" } }
+      }
+    },
+    "Language/Region:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Sprache/Region:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Idioma/región:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Langue/région :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "言語/地域:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "언어/지역:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Idioma/região:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "语言/地区：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "語言/地區：" } }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Aceptar" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "확인" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "OK" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "好" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "好" } }
+      }
+    },
+    "Please describe the issue or suggestion:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Problem oder Vorschlag beschreiben:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Describe el problema o la sugerencia:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Décrivez le problème ou votre suggestion :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "問題や提案を入力してください:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "문제 또는 제안 사항을 설명해 주세요:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Descreva o problema ou a sugestão:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "请描述问题或建议：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "請描述問題或建議：" } }
+      }
+    },
+    "Privacy Policy" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datenschutzrichtlinie" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Política de privacidad" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Politique de confidentialité" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "プライバシーポリシー" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "개인정보 처리방침" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Política de Privacidade" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "隐私政策" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "隱私權政策" } }
+      }
+    },
+    "Rate This App" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese App bewerten" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Calificar esta app" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Noter cette app" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "このアプリを評価" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이 앱 평가하기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Avaliar este app" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "评价这个 App" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "為此 App 評分" } }
+      }
+    },
+    "Share This App" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese App teilen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Compartir esta app" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Partager cette app" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "このアプリを共有" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이 앱 공유하기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Compartilhar este app" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "分享这个 App" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "分享此 App" } }
+      }
+    },
+    "Support" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Support" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Ayuda" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Assistance" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "サポート" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "지원" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Suporte" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "支持" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "支援" } }
+      }
+    },
+    "Support This App" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diese App unterstützen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Apoya esta app" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Soutenir cette app" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "このアプリを応援" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이 앱 응원하기" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Apoie este app" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "支持这个 App" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "支持此 App" } }
+      }
+    },
+    "System Version:" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Systemversion:" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión del sistema:" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version du système :" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "システムバージョン:" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "시스템 버전:" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Versão do sistema:" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "系统版本：" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "系統版本：" } }
+      }
+    },
+    "Terms of Use" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzungsbedingungen" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Términos de uso" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Conditions d’utilisation" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "利用規約" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이용 약관" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Termos de Uso" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "使用条款" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "使用條款" } }
+      }
+    },
+    "User Feedback" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nutzerfeedback" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Comentarios de usuarios" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Commentaires" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ユーザーフィードバック" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "사용자 피드백" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Feedback do usuário" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "用户反馈" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "使用者意見回饋" } }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Version" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Versión" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Version" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "バージョン" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "버전" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Versão" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "版本" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "版本" } }
+      }
+    },
+    "WeChat ID Copied" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "WeChat-ID kopiert" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "ID de WeChat copiado" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Identifiant WeChat copié" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "WeChat IDをコピーしました" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "WeChat ID를 복사함" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "ID do WeChat copiado" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "已复制微信号" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "已複製微信 ID" } }
+      }
+    },
+    "Xiaohongshu" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Xiaohongshu" } },
+        "es" : { "stringUnit" : { "state" : "translated", "value" : "Xiaohongshu" } },
+        "fr" : { "stringUnit" : { "state" : "translated", "value" : "Xiaohongshu" } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "小紅書" } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "샤오홍슈" } },
+        "pt-BR" : { "stringUnit" : { "state" : "translated", "value" : "Xiaohongshu" } },
+        "zh-Hans" : { "stringUnit" : { "state" : "translated", "value" : "小红书" } },
+        "zh-Hant" : { "stringUnit" : { "state" : "translated", "value" : "小紅書" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
