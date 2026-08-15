@@ -11,9 +11,9 @@ enum SupportConstants {
     )
 
     static let xiaohongshuApp = URL(
-        string: "xhsdiscover://user/60c7398e0000000001005786"
+        string: "xhsdiscover://user/6543a268000000000301f574"
     )
     static let xiaohongshuWeb = URL(
-        string: "https://www.xiaohongshu.com/user/profile/60c7398e0000000001005786"
+        string: "https://www.xiaohongshu.com/user/profile/6543a268000000000301f574"
     )
 }

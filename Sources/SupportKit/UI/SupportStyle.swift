@@ -20,6 +20,35 @@ public struct SupportAction: RawRepresentable, Hashable, Identifiable, Sendable 
     public static let privacyPolicy = Self(rawValue: "privacyPolicy")
     public static let termsOfUse = Self(rawValue: "termsOfUse")
     public static let version = Self(rawValue: "version")
+
+    /// The package's recommended information-hierarchy placement for this action.
+    ///
+    /// Hosts may override this recommendation to fit their own settings structure.
+    /// Unknown future actions default to the secondary level so package updates do not
+    /// unexpectedly add prominent rows to an app's root settings page.
+    public var recommendedPlacement: SupportPlacement {
+        switch self {
+        case .featureSuggestion, .emailFeedback, .copyWeChatID, .xiaohongshu,
+            .rateApp, .shareApp:
+            .primary
+        default:
+            .secondary
+        }
+    }
+}
+
+public struct SupportPlacement: RawRepresentable, Hashable, Sendable {
+    public let rawValue: String
+
+    public init(rawValue: String) {
+        self.rawValue = rawValue
+    }
+
+    /// Recommended for important actions shown directly on the host settings page.
+    public static let primary = Self(rawValue: "primary")
+
+    /// Recommended for lower-frequency actions shown on a secondary support/about page.
+    public static let secondary = Self(rawValue: "secondary")
 }
 
 public struct SupportAccessory: Hashable, Sendable {
@@ -58,20 +87,27 @@ public struct SupportStyleConfiguration {
     public struct Item: Identifiable {
         public let id: SupportAction
         public let title: String
+        /// A package-owned icon that custom styles can size and shape for their UI.
+        public let suggestedIcon: Image
         public let suggestedSystemImage: String
+        public let recommendedPlacement: SupportPlacement
         public let accessory: SupportAccessory
         public let perform: (@MainActor () -> Void)?
 
         init(
             id: SupportAction,
             title: String,
+            suggestedIcon: Image,
             suggestedSystemImage: String,
+            recommendedPlacement: SupportPlacement,
             accessory: SupportAccessory,
             perform: (@MainActor () -> Void)?
         ) {
             self.id = id
             self.title = title
+            self.suggestedIcon = suggestedIcon
             self.suggestedSystemImage = suggestedSystemImage
+            self.recommendedPlacement = recommendedPlacement
             self.accessory = accessory
             self.perform = perform
         }
