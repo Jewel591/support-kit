@@ -65,7 +65,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 presenting: selectedFeedbackPurpose
             ) { purpose in
                 if let reviewURL = host?.reviewURL {
-                    Button(SupportCopy.appStorePublicReview) {
+                    Button(SupportCopy.appStoreReview) {
                         open(reviewURL)
                     }
                 }

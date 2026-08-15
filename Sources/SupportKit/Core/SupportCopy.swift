@@ -13,8 +13,12 @@ enum SupportCopy {
         String(localized: "Choose a Feedback Channel", bundle: .module)
     }
 
-    static var appStorePublicReview: String {
-        String(localized: "Post Publicly on the App Store", bundle: .module)
+    static var appStoreReview: String {
+        appStoreReview(locale: .current)
+    }
+
+    static func appStoreReview(locale: Locale) -> String {
+        SupportLocalization.string("Leave a Review on the App Store", locale: locale)
     }
 
     static var emailFeedback: String {
@@ -27,7 +31,7 @@ enum SupportCopy {
 
     static func feedbackChannelExplanation(locale: Locale) -> String {
         SupportLocalization.string(
-            "We regularly read and respond to App Store reviews. Email is best for details and device diagnostics.",
+            "We regularly read and respond to App Store reviews.",
             locale: locale
         )
     }
