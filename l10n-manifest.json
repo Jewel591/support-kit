@@ -1,0 +1,10 @@
+{
+  "catalogs": [
+    {
+      "path": "Sources/SupportKit/Resources/Localizable.xcstrings",
+      "target": "SupportKit",
+      "sourceRoot": "Sources/SupportKit",
+      "platforms": ["iOS"]
+    }
+  ]
+}
