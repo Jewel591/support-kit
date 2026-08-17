@@ -1,0 +1,38 @@
+---
+name: integrate-supportkit
+description: 在任何 Apple App 里实现、迁移或排查「联系我们 / 用户支持 / 关注我们」设置页能力时必须先加载：一律接 SupportKit（Jewel591/support-kit），⛔ 不再手写反馈邮件、微信/小红书跳转、隐私政策与 EULA 链接。覆盖标准接入姿势、CI lint（support-kit-lint）的装配证据、primary/secondary 放置规范、未知宿主 fail-closed 规则与新产品登记流程。触发词：联系我们、用户支持、反馈、关注我们、support page、SupportKit。
+---
+
+# SupportKit 接入 skill
+
+（本文件是 skill 正身；各机器 `~/.agents/skills/integrate-supportkit/` 只放指向这里的壳。）
+
+全线 Apple App 的支持/联系入口唯一正身是
+**[Jewel591/support-kit](https://github.com/Jewel591/support-kit)**。
+产品边界读仓库 `CLAUDE.md`，用法读 `README.md`；playbook 裁决在 `tech-stack TOOL-19`。
+
+## 何时触发
+
+- 设置页要加「联系我们 / 关注我们 / 隐私政策」
+- 存量项目里看到手写 mailto 拼接、微信号复制、小红书 URL scheme 跳转
+- `support-kit-lint` 红灯
+- 新产品上架，要登记 Bundle ID / App Store ID
+- 排查评分或分享入口不出现（多半是未知宿主 fail closed，见规则 4）
+
+## 硬性规则
+
+1. ⛔ 不手写支持入口。反馈邮箱、微信、小红书、官网、隐私政策、Apple 标准 EULA、
+   邮件诊断信息与各动作的 fallback 全在 kit 内。
+2. 接入 = lint 证据齐全（`support-kit-lint`，validation 起硬闸）：
+   - canonical URL + `Up to Next Major Version`（`from:`）依赖声明
+   - application target 生产源码 `import SupportKit`
+   - **模块限定**构造唯一根入口 `SupportKit.SupportView(...)`
+     （测试 / Preview / DEBUG / extension / 同名本地类型不算证据）
+3. 放置规范由 kit 的 placement 元数据定：`.primary` 动作渲染在设置页一级，
+   `.secondary` 动作走独立支持页 `SupportView(placement:)`。自定义 UI 通过
+   `SupportStyle` 覆盖整页渲染，但必须调用 `SupportStyleConfiguration` 提供的动作，
+   ⛔ 不自己重实现动作行为。
+4. **未知宿主 fail closed**：联系/法务动作保留，App Store 评分与分享动作隐藏。
+   新产品上架前去 kit 仓库登记 Bundle ID / App Store ID 并发新版本，
+   ⛔ 不在宿主侧硬塞 App Store 链接绕过。
+5. ⛔ 公开仓库与反馈模板里永不出现 secrets、API token、用户标识或账号邮箱。
