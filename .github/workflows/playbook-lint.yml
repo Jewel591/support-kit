@@ -1,0 +1,49 @@
+# 全线检查聚合 —— stub workflow 模板，整份复制进产品仓库 .github/workflows/playbook-lint.yml。
+#
+# 这是产品仓库**唯一**需要装的静态政策 workflow：红/绿 lint logic 在
+# `.github/actions/playbook-lint`，运维前置分类在独立 composite action；两者共享一个
+# runner job，但后者仍写独立的 `rollout-readiness` commit status。
+# 新增 lint 时本文件不变、ruleset 也不变——那正是聚合的全部意义。
+#
+# 接入前置（按仓库形态，缺哪个补哪个）：
+#   有 .xcstrings  → 仓库根建 l10n-manifest.json（只写 catalog/target 映射；
+#                    源语言和 locale 集合由 playbook-policy.json 唯一保存）
+#   Apple application → 从 MVP 起默认要求 app-store-metadata-manifest.json 与结构完整的
+#                       fastlane/metadata；长期非 App Store 分发才可在 manifest 写
+#                       distribution=non-app-store + 具体 reason。App Store App 的更新与
+#                       WhatsNewKit 装配 finding 仍按各自 validation 门槛处理
+#   有 .swift      → 必须存在 String Catalog 与 l10n-manifest；否则本地化启动闸直接失败。
+#                    同时接入即扫描全部 Swift 现状；所有未豁免命中直接失败，不设 baseline，
+#                    ⛔ lint-config.json 出现 disabled / ignore / skip 即配置错误
+#   Apple 工程 → sentry / screenshot lint 从 MVP 即执行；未接入 finding 在 validation 前
+#                为 warning，达到 validation 后为 error。lint-config.json 的 Sentry 路径
+#                只传参数，不能关闭检查；声明损坏始终 error。
+#
+# ⚠️ 故意不加 paths 过滤：本 check 是 required，paths 过滤会让不触及对应文件的 PR
+#    永远停在 Expected 无法合并（Apper 撞过）。全量跑秒级，无过滤成本。
+# ⚠️ data-safety-gate 要读 PR 载荷与 diff，故需要 pull-requests: read 与 GITHUB_TOKEN。
+# ⚠️ **必须显式列出 edited**：默认事件类型不含它，而 data-safety-gate 判的是 PR 正文
+#    ——正文首次通过后被删掉「数据影响」段落，check 不会重跑、绿灯就此过期（反向补齐
+#    正文也不会自动转绿）。这是聚合最容易丢掉的一条契约：各子 lint 原本各自声明触发
+#    事件，收敛成一个 stub 后必须取它们的**并集**。
+name: playbook-lint
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+permissions:
+  contents: read
+  pull-requests: read
+  statuses: write
+jobs:
+  playbook-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: Jewel591/product-playbook/.github/actions/playbook-lint@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish rollout-readiness status
+        if: always()
+        uses: Jewel591/product-playbook/.github/actions/rollout-readiness-classifier@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
