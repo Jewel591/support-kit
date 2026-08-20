@@ -36,3 +36,10 @@ description: 在任何 Apple App 里实现、迁移或排查「联系我们 / �
    新产品上架前去 kit 仓库登记 Bundle ID / App Store ID 并发新版本，
    ⛔ 不在宿主侧硬塞 App Store 链接绕过。
 5. ⛔ 公开仓库与反馈模板里永不出现 secrets、API token、用户标识或账号邮箱。
+
+## 宿主测试边界
+
+- 宿主只测试自己的 bundle identity、入口放置，以及自定义 `SupportStyle` 是否调用 Kit configuration 提供的动作。
+- placement、未知宿主 fail closed、邮件诊断拼装、URL fallback 与 App Store 动作属于 SupportKit；这些固定规则只在 Kit 包测试一次。
+- 不在 XCTest 中扫描 `project.pbxproj`、import、旧类型名或源码字符串；装配与旧实现残留由 `support-kit-lint` 负责。
+- 不调用真实邮件、URL scheme 或 App Store。若多个 App 复制同一个动作 fake，先把缺失接缝收回 Kit。
