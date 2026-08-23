@@ -2,9 +2,14 @@ import MessageUI
 import SwiftUI
 
 @MainActor
-struct FeedbackMailComposer: UIViewControllerRepresentable {
-    @Environment(\.dismiss) private var dismiss
+protocol MailComposerDismissing: AnyObject {
+    func dismiss(animated flag: Bool, completion: (() -> Void)?)
+}
 
+extension MFMailComposeViewController: MailComposerDismissing {}
+
+@MainActor
+struct FeedbackMailComposer: UIViewControllerRepresentable {
     let mail: FeedbackMail
     let onFailure: @MainActor () -> Void
 
@@ -23,19 +28,14 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
     ) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(dismiss: dismiss, onFailure: onFailure)
+        Coordinator(onFailure: onFailure)
     }
 
     @MainActor
     final class Coordinator: NSObject, @preconcurrency MFMailComposeViewControllerDelegate {
-        private let dismiss: DismissAction
         private let onFailure: @MainActor () -> Void
 
-        init(
-            dismiss: DismissAction,
-            onFailure: @escaping @MainActor () -> Void
-        ) {
-            self.dismiss = dismiss
+        init(onFailure: @escaping @MainActor () -> Void) {
             self.onFailure = onFailure
         }
 
@@ -44,10 +44,22 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
             didFinishWith result: MFMailComposeResult,
             error: Error?
         ) {
-            dismiss()
-            if Self.shouldOfferFallback(result: result, error: error) {
+            finish(controller: controller, result: result, error: error)
+        }
+
+        func finish(
+            controller: any MailComposerDismissing,
+            result: MFMailComposeResult,
+            error: Error?
+        ) {
+            let shouldOfferFallback = Self.shouldOfferFallback(
+                result: result,
+                error: error
+            )
+            if shouldOfferFallback {
                 onFailure()
             }
+            controller.dismiss(animated: true, completion: nil)
         }
 
         static func shouldOfferFallback(

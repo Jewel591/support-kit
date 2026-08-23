@@ -40,7 +40,9 @@ explicit placements.
 The default `SystemSupportStyle` uses native `List` and `Section` components without decorative
 leading icons on the secondary support page. Feature Suggestions and Problem Feedback are
 separate primary actions; each lets the user choose between a public App Store review and a
-private email with the appropriate subject, prompt, and device diagnostics.
+private email with the appropriate subject, prompt, and device diagnostics. When the host has
+no App Store review destination, either row opens email directly instead of showing a redundant
+single-choice channel dialog.
 
 ## Custom UI
 

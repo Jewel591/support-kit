@@ -115,7 +115,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 title: purpose.title(),
                 symbol: purpose.suggestedSystemImage,
                 accessory: .disclosure,
-                perform: { selectedFeedbackPurpose = purpose }
+                perform: { beginFeedback(for: purpose) }
             )
         }
 
@@ -257,6 +257,14 @@ public struct SupportView<Style: SupportStyle>: View {
                 }
             }
         )
+    }
+
+    private func beginFeedback(for purpose: FeedbackPurpose) {
+        guard FeedbackPurpose.shouldChooseChannel(reviewURL: host?.reviewURL) else {
+            presentEmail(for: purpose)
+            return
+        }
+        selectedFeedbackPurpose = purpose
     }
 
     private func presentEmail(for purpose: FeedbackPurpose) {

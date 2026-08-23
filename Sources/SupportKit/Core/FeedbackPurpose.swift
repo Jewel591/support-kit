@@ -20,6 +20,10 @@ enum FeedbackPurpose: String, CaseIterable, Identifiable {
         }
     }
 
+    static func shouldChooseChannel(reviewURL: URL?) -> Bool {
+        reviewURL != nil
+    }
+
     func title(locale: Locale = .current) -> String {
         switch self {
         case .featureSuggestion:
