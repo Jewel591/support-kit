@@ -42,13 +42,15 @@ struct FeedbackMailComposerTests {
         )
     }
 
-    @Test("Completion dismisses only the provided mail composer")
-    func completionDismissesMailComposerBeforeFallback() {
-        var didOfferFallback = false
+    @Test("Failure is recorded before dismissing only the provided mail composer")
+    func failurePrecedesMailComposerDismissal() {
+        var events: [String] = []
         let coordinator = FeedbackMailComposer.Coordinator {
-            didOfferFallback = true
+            events.append("fallback")
         }
-        let controller = MailComposerDismissSpy()
+        let controller = MailComposerDismissSpy {
+            events.append("dismiss")
+        }
 
         coordinator.finish(
             controller: controller,
@@ -57,25 +59,22 @@ struct FeedbackMailComposerTests {
         )
 
         #expect(controller.dismissCallCount == 1)
-        #expect(!didOfferFallback)
-
-        controller.completeDismissal()
-
-        #expect(didOfferFallback)
+        #expect(events == ["fallback", "dismiss"])
     }
 }
 
 @MainActor
 private final class MailComposerDismissSpy: MailComposerDismissing {
+    private let onDismiss: () -> Void
     private(set) var dismissCallCount = 0
-    private var completion: (() -> Void)?
+
+    init(onDismiss: @escaping () -> Void) {
+        self.onDismiss = onDismiss
+    }
 
     func dismiss(animated flag: Bool, completion: (() -> Void)?) {
         dismissCallCount += 1
-        self.completion = completion
-    }
-
-    func completeDismissal() {
+        onDismiss()
         completion?()
     }
 }

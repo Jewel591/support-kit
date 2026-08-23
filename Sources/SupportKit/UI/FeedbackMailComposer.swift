@@ -56,11 +56,10 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
                 result: result,
                 error: error
             )
-            controller.dismiss(animated: true) { [onFailure] in
-                if shouldOfferFallback {
-                    onFailure()
-                }
+            if shouldOfferFallback {
+                onFailure()
             }
+            controller.dismiss(animated: true, completion: nil)
         }
 
         static func shouldOfferFallback(
