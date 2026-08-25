@@ -35,7 +35,8 @@ description: 在任何 Apple App 里实现、迁移或排查「联系我们 / �
    `SupportActionRow(item) { content in ... }`，紧凑内联链接必须用
    `SupportActionLink(item) { content in ... }`。标题、图标、accessory 只通过闭包内的
    `content` 提供；两者都由 Kit 创建控件和执行动作。宿主只提供 label 视觉，⛔ 读取
-   动作闭包、自己创建 Button 或重实现动作行为。
+   动作闭包、自己创建 Button 或重实现动作行为。Style 可迭代 `configuration.groups`
+   保留 Kit 本地化的语义分组，也可迭代 `configuration.items` 自行组织。
 5. **未知宿主 fail closed**：联系/法务动作保留，App Store 评分与分享动作隐藏。
    新产品上架前去 kit 仓库登记 Bundle ID / App Store ID 并发新版本，
    ⛔ 不在宿主侧硬塞 App Store 链接绕过。

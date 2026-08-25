@@ -68,10 +68,10 @@ public struct SupportActionContent {
 
 @MainActor
 public struct SupportStyleConfiguration {
-    struct Group: Identifiable {
-        let id: String
-        let title: String
-        let items: [Item]
+    public struct Group: Identifiable {
+        public let id: String
+        public let title: String
+        public let items: [Item]
 
         init(id: String, title: String, items: [Item]) {
             self.id = id
@@ -107,7 +107,11 @@ public struct SupportStyleConfiguration {
     public let navigationTitle: String
     /// The actions selected for this surface, in the order requested by the host.
     public let items: [Item]
-    let groups: [Group]
+    /// Package-localized semantic groups containing the selected actions.
+    ///
+    /// Hosts may render these groups as supplied or ignore them and organize ``items``
+    /// according to their own information architecture.
+    public let groups: [Group]
 
     init(navigationTitle: String, groups: [Group]) {
         self.navigationTitle = navigationTitle

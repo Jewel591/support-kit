@@ -102,8 +102,9 @@ not to display package-owned brand artwork.
 
 Version 2.0 removes `SupportPlacement`, `recommendedPlacement`, `SupportView(placement:)`, and
 the public `Item.perform` closure. Replace each placement with the App's explicit action list.
-Custom styles iterate `configuration.items` and wrap labels in `SupportActionRow` or
-`SupportActionLink`; do not construct a Button around either control. Apps that already use the
+Custom styles may iterate `configuration.groups` to preserve SupportKit's localized semantic
+sections or `configuration.items` to organize actions themselves; every label must be wrapped in
+`SupportActionRow` or `SupportActionLink`, never a host-created Button. Apps that already use the
 complete `SupportView()` only need to update their minimum compatible version and refresh
 `Package.resolved`.
 

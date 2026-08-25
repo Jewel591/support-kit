@@ -37,6 +37,21 @@ struct SupportViewPublicAPITests {
         let _: SupportView<SystemSupportStyle> = SupportView()
     }
 
+    @Test("Public semantic groups remain available to custom styles")
+    func publicSemanticGroupsRemainAvailable() {
+        let recorder = SupportConfigurationRecorder()
+        let view = SupportView(
+            actions: [.featureSuggestion, .privacyPolicy, .version],
+            style: RecordingSupportStyle(recorder: recorder)
+        )
+
+        _ = view.body
+
+        #expect(recorder.groups.map(\.id) == ["contact", "about"])
+        #expect(recorder.groups[0].items.map(\.id) == [.featureSuggestion])
+        #expect(recorder.groups[1].items.map(\.id) == [.privacyPolicy, .version])
+    }
+
     @Test("Package brand icons fit inside a custom style frame")
     func brandIconsFitCustomStyleFrames() throws {
         let recorder = SupportConfigurationRecorder()
@@ -131,6 +146,7 @@ struct SupportViewPublicAPITests {
 private final class SupportConfigurationRecorder {
     var actions: [SupportAction] = []
     var items: [SupportStyleConfiguration.Item] = []
+    var groups: [SupportStyleConfiguration.Group] = []
 }
 
 private struct RecordingSupportStyle: SupportStyle {
@@ -139,6 +155,7 @@ private struct RecordingSupportStyle: SupportStyle {
     func makeBody(configuration: SupportStyleConfiguration) -> some View {
         recorder.items = configuration.items
         recorder.actions = recorder.items.map(\.id)
+        recorder.groups = configuration.groups
         return EmptyView()
     }
 }
