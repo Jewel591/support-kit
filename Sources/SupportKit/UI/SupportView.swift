@@ -20,7 +20,7 @@ public struct SupportView<Style: SupportStyle>: View {
     @Environment(\.openURL) private var openURL
 
     private let style: Style
-    private let placement: SupportPlacement?
+    private let actions: [SupportAction]?
     private let appInfo: SupportAppInfo
     private let host: SupportHost?
 
@@ -31,21 +31,21 @@ public struct SupportView<Style: SupportStyle>: View {
     @State private var mailPurpose = FeedbackPurpose.problemReport
     @State private var queuedMailPurpose: FeedbackPurpose?
 
-    @available(
-        *,
-        deprecated,
-        message: "Render explicit .primary and .secondary SupportView placements."
-    )
     public init(style: Style) {
-        self.init(placement: nil, style: style)
+        self.init(actions: nil, style: style)
     }
 
-    public init(placement: SupportPlacement, style: Style) {
-        self.init(placement: Optional(placement), style: style)
+    /// Creates a support surface containing the requested actions in the requested order.
+    ///
+    /// Unsupported actions and actions unavailable for the current host are omitted. Duplicate
+    /// actions use their first occurrence. The host owns which surface receives each action;
+    /// SupportKit continues to own the behavior of every item it supplies.
+    public init(actions: [SupportAction], style: Style) {
+        self.init(actions: Optional(actions), style: style)
     }
 
-    private init(placement: SupportPlacement?, style: Style) {
-        self.placement = placement
+    private init(actions: [SupportAction]?, style: Style) {
+        self.actions = actions
         self.style = style
         appInfo = .current
         host = SupportHostCatalog.currentHost
@@ -94,8 +94,8 @@ public struct SupportView<Style: SupportStyle>: View {
     }
 
     private var presentedConfiguration: SupportStyleConfiguration {
-        guard let placement else { return configuration }
-        return configuration.filtered(to: placement)
+        guard let actions else { return configuration }
+        return configuration.selecting(actions)
     }
 
     private func handleSheetDismissal() {
@@ -115,7 +115,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 title: purpose.title(),
                 symbol: purpose.suggestedSystemImage,
                 accessory: .disclosure,
-                perform: { beginFeedback(for: purpose) }
+                handler: { beginFeedback(for: purpose) }
             )
         }
 
@@ -137,7 +137,7 @@ public struct SupportView<Style: SupportStyle>: View {
                             .renderingMode(.original)
                             .resizable(),
                         accessory: .copy,
-                        perform: copyWeChatID
+                        handler: copyWeChatID
                     ),
                     item(
                         id: .xiaohongshu,
@@ -147,7 +147,7 @@ public struct SupportView<Style: SupportStyle>: View {
                             .renderingMode(.original)
                             .resizable(),
                         accessory: .externalLink,
-                        perform: openXiaohongshu
+                        handler: openXiaohongshu
                     ),
                     // The official website is being rebuilt and is not public yet.
                     // Restore this item when the new site launches.
@@ -156,7 +156,7 @@ public struct SupportView<Style: SupportStyle>: View {
                     //     title: localized("Official Website"),
                     //     symbol: "globe",
                     //     accessory: .externalLink,
-                    //     perform: { open(SupportConstants.studioWebsite) }
+                    //     handler: { open(SupportConstants.studioWebsite) }
                     // ),
                 ]
             ),
@@ -173,14 +173,14 @@ public struct SupportView<Style: SupportStyle>: View {
                             title: SupportCopy.fiveStarRating,
                             symbol: "star",
                             accessory: .externalLink,
-                            perform: { open(host.reviewURL) }
+                            handler: { open(host.reviewURL) }
                         ),
                         item(
                             id: .shareApp,
                             title: localized("Share This App"),
                             symbol: "square.and.arrow.up",
                             accessory: .share,
-                            perform: { presentedSheet = .share }
+                            handler: { presentedSheet = .share }
                         ),
                     ]
                 )
@@ -197,21 +197,21 @@ public struct SupportView<Style: SupportStyle>: View {
                         title: localized("Privacy Policy"),
                         symbol: "hand.raised",
                         accessory: .externalLink,
-                        perform: { open(SupportConstants.privacyPolicy) }
+                        handler: { open(SupportConstants.privacyPolicy) }
                     ),
                     item(
                         id: .termsOfUse,
                         title: localized("Terms of Use"),
                         symbol: "doc.text",
                         accessory: .externalLink,
-                        perform: { open(SupportConstants.termsOfUse) }
+                        handler: { open(SupportConstants.termsOfUse) }
                     ),
                     item(
                         id: .version,
                         title: localized("Version"),
                         symbol: "info.circle",
                         accessory: .value("\(appInfo.version) (\(appInfo.build))"),
-                        perform: nil
+                        handler: nil
                     ),
                 ]
             )
@@ -229,16 +229,15 @@ public struct SupportView<Style: SupportStyle>: View {
         symbol: String,
         icon: Image? = nil,
         accessory: SupportAccessory,
-        perform: (@MainActor () -> Void)?
+        handler: (@MainActor () -> Void)?
     ) -> SupportStyleConfiguration.Item {
         SupportStyleConfiguration.Item(
             id: id,
             title: title,
             suggestedIcon: icon ?? Image(systemName: symbol),
             suggestedSystemImage: symbol,
-            recommendedPlacement: id.recommendedPlacement,
             accessory: accessory,
-            perform: perform
+            handler: handler
         )
     }
 
@@ -325,16 +324,11 @@ public struct SupportView<Style: SupportStyle>: View {
 }
 
 public extension SupportView where Style == SystemSupportStyle {
-    @available(
-        *,
-        deprecated,
-        message: "Render explicit .primary and .secondary SupportView placements."
-    )
     init() {
-        self.init(placement: nil, style: SystemSupportStyle())
+        self.init(actions: nil, style: SystemSupportStyle())
     }
 
-    init(placement: SupportPlacement) {
-        self.init(placement: placement, style: SystemSupportStyle())
+    init(actions: [SupportAction]) {
+        self.init(actions: actions, style: SystemSupportStyle())
     }
 }

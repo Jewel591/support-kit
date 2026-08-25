@@ -5,34 +5,27 @@ import UIKit
 
 @MainActor
 struct SupportViewPublicAPITests {
-    @Test("Public placement initializers deliver filtered configurations to styles")
-    func placementInitializersFilterThePresentedConfiguration() {
-        let primaryRecorder = SupportConfigurationRecorder()
-        let primaryView = SupportView(
-            placement: .primary,
-            style: RecordingSupportStyle(recorder: primaryRecorder)
+    @Test("Public action initializer delivers the host selection in order")
+    func actionInitializerSelectsThePresentedConfiguration() {
+        let recorder = SupportConfigurationRecorder()
+        let view = SupportView(
+            actions: [
+                .privacyPolicy,
+                .featureSuggestion,
+                .privacyPolicy,
+                SupportAction(rawValue: "futureAction"),
+            ],
+            style: RecordingSupportStyle(recorder: recorder)
         )
-        _ = primaryView.body
+        _ = view.body
 
-        let secondaryRecorder = SupportConfigurationRecorder()
-        let secondaryView = SupportView(
-            placement: .secondary,
-            style: RecordingSupportStyle(recorder: secondaryRecorder)
-        )
-        _ = secondaryView.body
+        #expect(recorder.actions == [.privacyPolicy, .featureSuggestion])
 
-        #expect(primaryRecorder.actions.contains(.featureSuggestion))
-        #expect(primaryRecorder.actions.contains(.problemFeedback))
-        #expect(primaryRecorder.actions.allSatisfy { $0.recommendedPlacement == .primary })
-        #expect(secondaryRecorder.actions.contains(.privacyPolicy))
-        #expect(secondaryRecorder.actions.contains(.termsOfUse))
-        #expect(secondaryRecorder.actions.allSatisfy { $0.recommendedPlacement == .secondary })
-
-        let _: SupportView<SystemSupportStyle> = SupportView(placement: .primary)
+        let _: SupportView<SystemSupportStyle> = SupportView(actions: [.privacyPolicy])
     }
 
-    @Test("Deprecated style initializer preserves the complete catalog")
-    func unfilteredStyleInitializerRemainsCompatible() {
+    @Test("Unfiltered initializers preserve the complete catalog")
+    func unfilteredInitializersPreserveCompleteCatalog() {
         let recorder = SupportConfigurationRecorder()
         let view = SupportView(style: RecordingSupportStyle(recorder: recorder))
 
@@ -48,7 +41,7 @@ struct SupportViewPublicAPITests {
     func brandIconsFitCustomStyleFrames() throws {
         let recorder = SupportConfigurationRecorder()
         let view = SupportView(
-            placement: .primary,
+            actions: [.copyWeChatID, .xiaohongshu],
             style: RecordingSupportStyle(recorder: recorder)
         )
         _ = view.body
@@ -56,12 +49,14 @@ struct SupportViewPublicAPITests {
         for action in [SupportAction.copyWeChatID, .xiaohongshu] {
             let item = try #require(recorder.items.first { $0.id == action })
             let renderer = ImageRenderer(
-                content: item.suggestedIcon
-                    .font(.title3)
-                    .foregroundStyle(.white)
-                    .frame(width: 36, height: 36)
-                    .background(Color.blue)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                content: SupportActionLink(item) { content in
+                    content.suggestedIcon
+                        .font(.title3)
+                        .foregroundStyle(.white)
+                        .frame(width: 36, height: 36)
+                        .background(Color.blue)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
             )
             renderer.scale = 1
 
@@ -80,6 +75,24 @@ struct SupportViewPublicAPITests {
                 )
             }
         }
+    }
+
+    @Test("Package-owned row and link controls accept interactive and read-only items")
+    func packageOwnedActionControlsCompileForBothItemRoles() throws {
+        let recorder = SupportConfigurationRecorder()
+        let view = SupportView(
+            actions: [.featureSuggestion, .version],
+            style: RecordingSupportStyle(recorder: recorder)
+        )
+        _ = view.body
+
+        let actionItem = try #require(recorder.items.first { $0.id == .featureSuggestion })
+        let valueItem = try #require(recorder.items.first { $0.id == .version })
+
+        _ = SupportActionRow(actionItem) { Text($0.title) }.body
+        _ = SupportActionLink(actionItem) { Text($0.title) }.body
+        _ = SupportActionRow(valueItem) { Text($0.title) }.body
+        _ = SupportActionLink(valueItem) { Text($0.title) }.body
     }
 
     private func rgbaPixel(
@@ -124,7 +137,7 @@ private struct RecordingSupportStyle: SupportStyle {
     let recorder: SupportConfigurationRecorder
 
     func makeBody(configuration: SupportStyleConfiguration) -> some View {
-        recorder.items = configuration.groups.flatMap(\.items)
+        recorder.items = configuration.items
         recorder.actions = recorder.items.map(\.id)
         return EmptyView()
     }

@@ -20,34 +20,6 @@ public struct SupportAction: RawRepresentable, Hashable, Identifiable, Sendable 
     public static let privacyPolicy = Self(rawValue: "privacyPolicy")
     public static let termsOfUse = Self(rawValue: "termsOfUse")
     public static let version = Self(rawValue: "version")
-
-    /// The package-owned information-hierarchy placement for this action.
-    ///
-    /// Unknown future actions default to the secondary level so package updates do not
-    /// unexpectedly add prominent rows to an app's root settings page.
-    public var recommendedPlacement: SupportPlacement {
-        switch self {
-        case .featureSuggestion, .emailFeedback, .copyWeChatID, .xiaohongshu,
-            .rateApp, .shareApp:
-            .primary
-        default:
-            .secondary
-        }
-    }
-}
-
-public struct SupportPlacement: RawRepresentable, Hashable, Sendable {
-    public let rawValue: String
-
-    public init(rawValue: String) {
-        self.rawValue = rawValue
-    }
-
-    /// Important actions shown directly on the host settings page.
-    public static let primary = Self(rawValue: "primary")
-
-    /// Lower-frequency actions shown on a secondary support/about page.
-    public static let secondary = Self(rawValue: "secondary")
 }
 
 public struct SupportAccessory: Hashable, Sendable {
@@ -69,12 +41,37 @@ public struct SupportAccessory: Hashable, Sendable {
     }
 }
 
+/// Package-provided display metadata available only while building a package-owned control.
+public struct SupportActionContent {
+    public let title: String
+    /// A package-owned icon prepared for custom styles to place in a bounded frame.
+    ///
+    /// SF Symbols remain template images and respond to `font` and `foregroundStyle`.
+    /// Full-color brand artwork is already original-rendered and resizable, so custom
+    /// styles should not force a rendering mode or call `resizable()` themselves.
+    public let suggestedIcon: Image
+    public let suggestedSystemImage: String
+    public let accessory: SupportAccessory
+
+    init(
+        title: String,
+        suggestedIcon: Image,
+        suggestedSystemImage: String,
+        accessory: SupportAccessory
+    ) {
+        self.title = title
+        self.suggestedIcon = suggestedIcon
+        self.suggestedSystemImage = suggestedSystemImage
+        self.accessory = accessory
+    }
+}
+
 @MainActor
 public struct SupportStyleConfiguration {
-    public struct Group: Identifiable {
-        public let id: String
-        public let title: String
-        public let items: [Item]
+    struct Group: Identifiable {
+        let id: String
+        let title: String
+        let items: [Item]
 
         init(id: String, title: String, items: [Item]) {
             self.id = id
@@ -85,61 +82,82 @@ public struct SupportStyleConfiguration {
 
     public struct Item: Identifiable {
         public let id: SupportAction
-        public let title: String
-        /// A package-owned icon prepared for custom styles to place in a bounded frame.
-        ///
-        /// SF Symbols remain template images and respond to `font` and `foregroundStyle`.
-        /// Full-color brand artwork is already original-rendered and resizable, so custom
-        /// styles should not force a rendering mode or call `resizable()` themselves.
-        public let suggestedIcon: Image
-        public let suggestedSystemImage: String
-        public let recommendedPlacement: SupportPlacement
-        public let accessory: SupportAccessory
-        public let perform: (@MainActor () -> Void)?
+        let content: SupportActionContent
+        let handler: (@MainActor () -> Void)?
 
         init(
             id: SupportAction,
             title: String,
             suggestedIcon: Image,
             suggestedSystemImage: String,
-            recommendedPlacement: SupportPlacement,
             accessory: SupportAccessory,
-            perform: (@MainActor () -> Void)?
+            handler: (@MainActor () -> Void)?
         ) {
             self.id = id
-            self.title = title
-            self.suggestedIcon = suggestedIcon
-            self.suggestedSystemImage = suggestedSystemImage
-            self.recommendedPlacement = recommendedPlacement
-            self.accessory = accessory
-            self.perform = perform
+            content = SupportActionContent(
+                title: title,
+                suggestedIcon: suggestedIcon,
+                suggestedSystemImage: suggestedSystemImage,
+                accessory: accessory
+            )
+            self.handler = handler
         }
     }
 
     public let navigationTitle: String
-    public let groups: [Group]
+    /// The actions selected for this surface, in the order requested by the host.
+    public let items: [Item]
+    let groups: [Group]
 
     init(navigationTitle: String, groups: [Group]) {
         self.navigationTitle = navigationTitle
+        items = groups.flatMap(\.items)
         self.groups = groups
     }
 
-    func filtered(to placement: SupportPlacement) -> Self {
-        let matchingGroups: [Group] = groups.compactMap { group -> Group? in
-            let matchingItems = group.items.filter {
-                $0.recommendedPlacement == placement
+    private init(navigationTitle: String, items: [Item], groups: [Group]) {
+        self.navigationTitle = navigationTitle
+        self.items = items
+        self.groups = groups
+    }
+
+    func selecting(_ actions: [SupportAction]) -> Self {
+        var seenActions = Set<SupportAction>()
+        var selectedItems: [Item] = []
+        var selectedGroupIDs: [String] = []
+        var selectedItemsByGroupID: [String: [Item]] = [:]
+
+        for action in actions where seenActions.insert(action).inserted {
+            guard let group = groups.first(where: { group in
+                group.items.contains(where: { $0.id == action })
+            }), let item = group.items.first(where: { $0.id == action }) else {
+                continue
             }
-            guard !matchingItems.isEmpty else { return nil }
+
+            if selectedItemsByGroupID[group.id] == nil {
+                selectedGroupIDs.append(group.id)
+            }
+            selectedItems.append(item)
+            selectedItemsByGroupID[group.id, default: []].append(item)
+        }
+
+        let selectedGroups = selectedGroupIDs.compactMap { groupID -> Group? in
+            guard let sourceGroup = groups.first(where: { $0.id == groupID }),
+                  let selectedItems = selectedItemsByGroupID[groupID]
+            else {
+                return nil
+            }
             return Group(
-                id: group.id,
-                title: group.title,
-                items: matchingItems
+                id: sourceGroup.id,
+                title: sourceGroup.title,
+                items: selectedItems
             )
         }
 
         return Self(
             navigationTitle: navigationTitle,
-            groups: matchingGroups
+            items: selectedItems,
+            groups: selectedGroups
         )
     }
 }
@@ -152,6 +170,72 @@ public protocol SupportStyle {
     func makeBody(configuration: SupportStyleConfiguration) -> Body
 }
 
+/// A package-owned support control for settings and list rows.
+///
+/// The label remains entirely host-defined, while SupportKit owns whether the item is
+/// interactive, which action runs, and the full-width rectangular interaction region.
+public struct SupportActionRow<Label: View>: View {
+    private let item: SupportStyleConfiguration.Item
+    private let label: Label
+
+    public init(
+        _ item: SupportStyleConfiguration.Item,
+        @ViewBuilder label: (SupportActionContent) -> Label
+    ) {
+        self.item = item
+        self.label = label(item.content)
+    }
+
+    public var body: some View {
+        if let handler = item.handler {
+            Button(action: handler) {
+                content
+            }
+            .buttonStyle(.plain)
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
+        label
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.interaction, Rectangle())
+    }
+}
+
+/// A package-owned support control for compact inline links.
+///
+/// Unlike ``SupportActionRow``, this control keeps the label's intrinsic width so adjacent
+/// links do not compete for or overlap one another's interaction regions.
+public struct SupportActionLink<Label: View>: View {
+    private let item: SupportStyleConfiguration.Item
+    private let label: Label
+
+    public init(
+        _ item: SupportStyleConfiguration.Item,
+        @ViewBuilder label: (SupportActionContent) -> Label
+    ) {
+        self.item = item
+        self.label = label(item.content)
+    }
+
+    public var body: some View {
+        if let handler = item.handler {
+            Button(action: handler) {
+                content
+            }
+            .buttonStyle(.plain)
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
+        label.contentShape(.interaction, Rectangle())
+    }
+}
+
 public struct SystemSupportStyle: SupportStyle {
     public init() {}
 
@@ -160,13 +244,8 @@ public struct SystemSupportStyle: SupportStyle {
             ForEach(configuration.groups) { group in
                 Section(group.title) {
                     ForEach(group.items) { item in
-                        if let perform = item.perform {
-                            Button(action: perform) {
-                                row(item)
-                            }
-                            .buttonStyle(.plain)
-                        } else {
-                            row(item)
+                        SupportActionRow(item) { content in
+                            row(content)
                         }
                     }
                 }
@@ -175,16 +254,15 @@ public struct SystemSupportStyle: SupportStyle {
         .navigationTitle(configuration.navigationTitle)
     }
 
-    private func row(_ item: SupportStyleConfiguration.Item) -> some View {
+    private func row(_ content: SupportActionContent) -> some View {
         HStack {
-            Text(item.title)
+            Text(content.title)
                 .foregroundStyle(.primary)
 
             Spacer()
 
-            accessory(item.accessory)
+            accessory(content.accessory)
         }
-        .contentShape(Rectangle())
     }
 
     @ViewBuilder
