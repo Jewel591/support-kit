@@ -22,44 +22,15 @@ struct SupportStyleAPITests {
     func extensibleTokens() {
         let action = SupportAction(rawValue: "futureAction")
         let accessory = SupportAccessory(identifier: "futureAccessory")
-        let placement = SupportPlacement(rawValue: "futurePlacement")
 
         #expect(action.rawValue == "futureAction")
-        #expect(action.recommendedPlacement == .secondary)
         #expect(accessory.identifier == "futureAccessory")
         #expect(accessory.valueText == nil)
-        #expect(placement.rawValue == "futurePlacement")
-    }
-
-    @Test("Important support actions are recommended for the primary level")
-    func primaryPlacementRecommendations() {
-        let primaryActions: [SupportAction] = [
-            .featureSuggestion,
-            .problemFeedback,
-            .copyWeChatID,
-            .xiaohongshu,
-            .rateApp,
-            .shareApp,
-        ]
-
-        #expect(primaryActions.allSatisfy { $0.recommendedPlacement == .primary })
-    }
-
-    @Test("About and legal actions are recommended for the secondary level")
-    func secondaryPlacementRecommendations() {
-        let secondaryActions: [SupportAction] = [
-            .officialWebsite,
-            .privacyPolicy,
-            .termsOfUse,
-            .version,
-        ]
-
-        #expect(secondaryActions.allSatisfy { $0.recommendedPlacement == .secondary })
     }
 
     @MainActor
-    @Test("Placement filtering keeps matching items and removes empty groups")
-    func placementFiltering() {
+    @Test("Action selection follows host order, ignores duplicates, and removes empty groups")
+    func actionSelection() {
         let configuration = SupportStyleConfiguration(
             navigationTitle: "Support",
             groups: [
@@ -68,44 +39,48 @@ struct SupportStyleAPITests {
                     title: "Contact Us",
                     items: [
                         item(id: .featureSuggestion),
-                        item(id: .privacyPolicy),
+                        item(id: .problemFeedback),
                     ]
                 ),
                 .init(
-                    id: "primary-only",
-                    title: "Primary",
-                    items: [item(id: .problemFeedback)]
+                    id: "about",
+                    title: "About",
+                    items: [
+                        item(id: .privacyPolicy),
+                        item(id: .version, handler: nil),
+                    ]
                 ),
             ]
         )
 
-        let primary = configuration.filtered(to: .primary)
-        let secondary = configuration.filtered(to: .secondary)
+        let selected = configuration.selecting([
+            .privacyPolicy,
+            .featureSuggestion,
+            .privacyPolicy,
+            SupportAction(rawValue: "futureAction"),
+            .version,
+        ])
 
-        let primaryGroupIDs = primary.groups.map { $0.id }
-        let primaryItemIDs = primary.groups.flatMap { $0.items }.map { $0.id }
-        let secondaryGroupIDs = secondary.groups.map { $0.id }
-        let secondaryItemIDs = secondary.groups.flatMap { $0.items }.map { $0.id }
-
-        #expect(primaryGroupIDs == ["contact", "primary-only"])
-        #expect(
-            primaryItemIDs
-                == [SupportAction.featureSuggestion, SupportAction.problemFeedback]
-        )
-        #expect(secondaryGroupIDs == ["contact"])
-        #expect(secondaryItemIDs == [SupportAction.privacyPolicy])
+        #expect(selected.items.map(\.id) == [.privacyPolicy, .featureSuggestion, .version])
+        #expect(selected.groups.map(\.id) == ["about", "contact"])
+        #expect(selected.groups[0].items.map(\.id) == [.privacyPolicy, .version])
+        #expect(selected.groups[1].items.map(\.id) == [.featureSuggestion])
+        #expect(selected.items[0].handler != nil)
+        #expect(selected.items[2].handler == nil)
     }
 
     @MainActor
-    private func item(id: SupportAction) -> SupportStyleConfiguration.Item {
+    private func item(
+        id: SupportAction,
+        handler: (@MainActor () -> Void)? = {}
+    ) -> SupportStyleConfiguration.Item {
         SupportStyleConfiguration.Item(
             id: id,
             title: id.rawValue,
             suggestedIcon: Image(systemName: "questionmark"),
             suggestedSystemImage: "questionmark",
-            recommendedPlacement: id.recommendedPlacement,
             accessory: .disclosure,
-            perform: {}
+            handler: handler
         )
     }
 }

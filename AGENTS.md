@@ -7,10 +7,10 @@ Public Swift Package for the studio's fixed support and contact surfaces on iOS.
 - The package owns the support email, WeChat ID, Xiaohongshu profile, studio website,
   privacy/EULA destinations, host Bundle ID catalog, App Store links, diagnostics,
   localization, action behavior, fallbacks, and optional SwiftUI surface.
-- Host apps own layout and entry navigation; package placement metadata is authoritative. Hosts
-  render `.primary` actions on the first-level settings page and `.secondary` actions on a
-  separate support page through `SupportView(placement:)`. They may replace rendering through
-  `SupportStyle`, but must invoke the actions supplied by `SupportStyleConfiguration`.
+- Host apps own information architecture, layout, and entry navigation. They select the actions
+  for each surface through `SupportView(actions:)` and may replace rendering through
+  `SupportStyle`. Custom styles render every interactive item through `SupportActionRow` or
+  `SupportActionLink`; action closures are package-private and must never be rebuilt by a host.
 - App identity and contact destinations are not external parameters. Unknown hosts keep
   contact/legal actions but fail closed by hiding App Store rating and sharing actions.
 - Never add secrets, API tokens, user identifiers, account email addresses, or private

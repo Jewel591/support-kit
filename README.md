@@ -12,37 +12,42 @@ exact version, branch, or revision. App and Xcode Cloud projects should commit t
 `Package.resolved` file for reproducible builds; the dependency declaration must still remain
 an automatically compatible version range.
 
-## Placement
+## Information architecture
 
-The host owns settings layout, while the package owns each action and its placement
-classification. Render `.primary` actions directly on the host's first-level settings page,
-then render `.secondary` actions on a separate support page:
+Each app owns where support actions appear. Select the actions for each surface explicitly;
+SupportKit keeps the action implementation, availability, localization, and fallbacks:
 
 ```swift
 import SupportKit
 
 SupportKit.SupportView(
-    placement: .primary,
+    actions: [
+        .featureSuggestion,
+        .problemFeedback,
+        .rateApp,
+        .shareApp,
+    ],
     style: AppSettingsSupportStyle()
 )
 
 NavigationLink("Support") {
-    SupportKit.SupportView(placement: .secondary)
+    SupportKit.SupportView(
+        actions: [.privacyPolicy, .termsOfUse, .version]
+    )
 }
 ```
 
-`SupportView(placement:)` filters groups before handing them to the style and removes empty
-groups. Styles therefore render only the requested level and do not duplicate package action
-catalogs or placement logic. The unfiltered `SupportView()` initializer remains temporarily
-available for source compatibility but is deprecated; new integrations must construct both
-explicit placements.
+`SupportView(actions:)` omits unknown or unavailable actions, ignores duplicate identifiers after
+their first occurrence, and hands the public item sequence to the style in host-requested order.
+Use `SupportView()` when a page should show the complete catalog. SupportKit deliberately has no
+primary/secondary classification: first-level versus secondary-page placement is a product UI
+decision, not a package behavior rule.
 
 The default `SystemSupportStyle` uses native `List` and `Section` components without decorative
-leading icons on the secondary support page. Feature Suggestions and Problem Feedback are
-separate primary actions; each lets the user choose between a public App Store review and a
-private email with the appropriate subject, prompt, and device diagnostics. When the host has
-no App Store review destination, either row opens email directly instead of showing a redundant
-single-choice channel dialog.
+leading icons. Feature Suggestions and Problem Feedback are separate actions; each lets the user
+choose between a public App Store review and a private email with the appropriate subject, prompt,
+and device diagnostics. When the host has no App Store review destination, either row opens email
+directly instead of showing a redundant single-choice channel dialog.
 
 ## Custom UI
 
@@ -53,17 +58,10 @@ action behavior:
 struct BrandSupportStyle: SupportStyle {
     func makeBody(configuration: SupportStyleConfiguration) -> some View {
         ScrollView {
-            ForEach(configuration.groups) { group in
-                VStack {
-                    Text(group.title)
-                    ForEach(group.items) { item in
-                        if let perform = item.perform {
-                            Button(action: perform) {
-                                Text(item.title)
-                            }
-                        } else {
-                            Text(item.title)
-                        }
+            VStack {
+                ForEach(configuration.items) { item in
+                    SupportActionRow(item) { content in
+                        Text(content.title)
                     }
                 }
             }
@@ -73,14 +71,16 @@ struct BrandSupportStyle: SupportStyle {
 }
 
 SupportKit.SupportView(
-    placement: .secondary,
+    actions: [.privacyPolicy, .termsOfUse, .version],
     style: BrandSupportStyle()
 )
 ```
 
-Styles receive already-localized display values and package-owned action closures. Interactive
-items must call `perform`; a `nil` closure denotes a read-only value such as the app version.
-URLs, mail presentation, clipboard behavior, and fallbacks remain inside the package.
+Styles receive already-localized display values but never receive action closures. Use
+`SupportActionRow` for a full-width settings/list row and `SupportActionLink` for a compact inline
+link. Both controls create the Button, execute the package action, and preserve read-only items
+such as the app version as static content. A custom style owns only the label visuals; URLs, mail
+presentation, clipboard behavior, hit regions, and fallbacks remain inside the package.
 Styles should render `suggestedIcon` directly to use package-owned symbols and brand artwork
 while retaining control over its bounded frame and surrounding layout:
 
@@ -98,17 +98,15 @@ in a custom style; doing so either enlarges SF Symbols unexpectedly or destroys 
 `suggestedSystemImage` remains available only as a fallback when an app intentionally chooses
 not to display package-owned brand artwork.
 
-Each item also exposes `recommendedPlacement`. Feedback, rating, sharing, WeChat, and
-Xiaohongshu belong to `.primary`; website, legal links, and version belong to `.secondary`.
-Unknown future actions default to the secondary level so package updates cannot silently add a
-new first-level settings action.
+### Migrating from 1.x
 
-### Migrating from 1.1.x
-
-Replace the unfiltered `SupportView()` with two explicit surfaces: render
-`SupportView(placement: .primary, style: ...)` in the first-level settings page and navigate to
-`SupportView(placement: .secondary)` for the remaining support information. The package keeps
-the action catalog and placement split consistent across both surfaces.
+Version 2.0 removes `SupportPlacement`, `recommendedPlacement`, `SupportView(placement:)`, and
+the public `Item.perform` closure. Replace each placement with the App's explicit action list.
+Custom styles may iterate `configuration.groups` to preserve SupportKit's localized semantic
+sections or `configuration.items` to organize actions themselves; every label must be wrapped in
+`SupportActionRow` or `SupportActionLink`, never a host-created Button. Apps that already use the
+complete `SupportView()` only need to update their minimum compatible version and refresh
+`Package.resolved`.
 
 `SupportAction` and `SupportAccessory` are extensible value tokens. Compare known values and
 provide a fallback for unknown ones instead of exhaustively switching over package UI metadata.
