@@ -4,24 +4,6 @@ import UIKit
 
 @MainActor
 public struct SupportView<Style: SupportStyle>: View {
-    private enum PresentedSheet: String, Identifiable {
-        case mail
-        case share
-
-        var id: String { rawValue }
-    }
-
-    private struct Notice: Identifiable {
-        enum Action {
-            case followXiaohongshu
-        }
-
-        let id = UUID()
-        let title: String
-        let message: String
-        var action: Action? = nil
-    }
-
     @Environment(\.openURL) private var openURL
 
     private let style: Style
@@ -29,12 +11,6 @@ public struct SupportView<Style: SupportStyle>: View {
     private let appInfo: SupportAppInfo
     private let host: SupportHost?
     private let feedbackFollowUpPreference = FeedbackFollowUpPreference()
-
-    @State private var presentedSheet: PresentedSheet?
-    @State private var notice: Notice?
-    @State private var pendingMailFailure = false
-    @State private var pendingMailSent = false
-    @State private var mailPurpose = FeedbackPurpose.problemReport
 
     public init(style: Style) {
         self.init(actions: nil, style: style)
@@ -58,38 +34,11 @@ public struct SupportView<Style: SupportStyle>: View {
 
     public var body: some View {
         style.makeBody(configuration: presentedConfiguration)
-            .sheet(item: $presentedSheet, onDismiss: handleSheetDismissal) { sheet in
-                switch sheet {
-                case .mail:
-                    FeedbackMailComposer(
-                        mail: FeedbackMail(app: appInfo, purpose: mailPurpose),
-                        onFailure: { pendingMailFailure = true },
-                        onSent: { pendingMailSent = true }
-                    )
-                case .share:
-                    if let appStoreURL = host?.appStoreURL {
-                        SupportActivityView(items: [appStoreURL])
-                    }
-                }
-            }
-            .alert(item: $notice) { notice in
-                alert(for: notice)
-            }
     }
 
     private var presentedConfiguration: SupportStyleConfiguration {
         guard let actions else { return configuration }
         return configuration.selecting(actions)
-    }
-
-    private func handleSheetDismissal() {
-        if pendingMailFailure {
-            pendingMailFailure = false
-            showEmailFallback()
-        } else if pendingMailSent {
-            pendingMailSent = false
-            showFeedbackFollowUpIfNeeded()
-        }
     }
 
     private var configuration: SupportStyleConfiguration {
@@ -103,7 +52,9 @@ public struct SupportView<Style: SupportStyle>: View {
                 title: purpose.title(),
                 symbol: purpose.suggestedSystemImage,
                 accessory: .disclosure,
-                handler: { enterFeedback(for: purpose) }
+                handler: { presentation in
+                    enterFeedback(for: purpose, presentation: presentation)
+                }
             )
         }
 
@@ -135,7 +86,7 @@ public struct SupportView<Style: SupportStyle>: View {
                             .renderingMode(.original)
                             .resizable(),
                         accessory: .externalLink,
-                        handler: openXiaohongshu
+                        handler: { _ in openXiaohongshu() }
                     ),
                     // The official website is being rebuilt and is not public yet.
                     // Restore this item when the new site launches.
@@ -150,7 +101,7 @@ public struct SupportView<Style: SupportStyle>: View {
             ),
         ]
 
-        if let host, host.appStoreURL != nil {
+        if let host, let appStoreURL = host.appStoreURL {
             groups.append(
                 SupportStyleConfiguration.Group(
                     id: "support",
@@ -161,14 +112,16 @@ public struct SupportView<Style: SupportStyle>: View {
                             title: SupportCopy.fiveStarRating,
                             symbol: "star",
                             accessory: .externalLink,
-                            handler: { open(host.reviewURL) }
+                            handler: { _ in open(host.reviewURL) }
                         ),
                         item(
                             id: .shareApp,
                             title: localized("Share This App"),
                             symbol: "square.and.arrow.up",
                             accessory: .share,
-                            handler: { presentedSheet = .share }
+                            handler: { presentation in
+                                presentation.present(.share(appStoreURL))
+                            }
                         ),
                     ]
                 )
@@ -185,14 +138,14 @@ public struct SupportView<Style: SupportStyle>: View {
                         title: localized("Privacy Policy"),
                         symbol: "hand.raised",
                         accessory: .externalLink,
-                        handler: { open(SupportConstants.privacyPolicy) }
+                        handler: { _ in open(SupportConstants.privacyPolicy) }
                     ),
                     item(
                         id: .termsOfUse,
                         title: localized("Terms of Use"),
                         symbol: "doc.text",
                         accessory: .externalLink,
-                        handler: { open(SupportConstants.termsOfUse) }
+                        handler: { _ in open(SupportConstants.termsOfUse) }
                     ),
                     item(
                         id: .version,
@@ -217,7 +170,7 @@ public struct SupportView<Style: SupportStyle>: View {
         symbol: String,
         icon: Image? = nil,
         accessory: SupportAccessory,
-        handler: (@MainActor () -> Void)?
+        handler: (@MainActor (SupportActionPresenter) -> Void)?
     ) -> SupportStyleConfiguration.Item {
         SupportStyleConfiguration.Item(
             id: id,
@@ -229,34 +182,46 @@ public struct SupportView<Style: SupportStyle>: View {
         )
     }
 
-    private func enterFeedback(for purpose: FeedbackPurpose) {
+    private func enterFeedback(
+        for purpose: FeedbackPurpose,
+        presentation: SupportActionPresenter
+    ) {
         switch purpose.entryRoute {
         case .email:
-            presentEmail(for: purpose)
+            presentEmail(for: purpose, presentation: presentation)
         }
     }
 
-    private func presentEmail(for purpose: FeedbackPurpose) {
-        mailPurpose = purpose
+    private func presentEmail(
+        for purpose: FeedbackPurpose,
+        presentation: SupportActionPresenter
+    ) {
+        let mail = FeedbackMail(app: appInfo, purpose: purpose)
         if MFMailComposeViewController.canSendMail() {
-            presentedSheet = .mail
+            presentation.present(
+                .mail(
+                    mail: mail,
+                    failureNotice: emailFallbackNotice(),
+                    sentNotice: feedbackFollowUpNotice
+                )
+            )
             return
         }
-        guard let url = FeedbackMail(app: appInfo, purpose: purpose).mailtoURL else {
-            showEmailFallback()
+        guard let url = mail.mailtoURL else {
+            presentation.present(emailFallbackNotice())
             return
         }
         openURL(url) { accepted in
             Task { @MainActor in
                 if !accepted {
-                    showEmailFallback()
+                    presentation.present(emailFallbackNotice())
                 }
             }
         }
     }
 
-    private func showEmailFallback() {
-        notice = Notice(
+    private func emailFallbackNotice() -> SupportNotice {
+        SupportNotice(
             title: String(localized: "Email Unavailable", bundle: .module),
             message: String(
                 localized: "Contact us at support@weisenjoy.com.",
@@ -265,46 +230,30 @@ public struct SupportView<Style: SupportStyle>: View {
         )
     }
 
-    private func showFeedbackFollowUpIfNeeded() {
-        guard feedbackFollowUpPreference.shouldPrompt else { return }
-        notice = Notice(
+    private func feedbackFollowUpNotice() -> SupportNotice? {
+        guard feedbackFollowUpPreference.shouldPrompt else { return nil }
+        return SupportNotice(
             title: String(localized: "Thanks for your feedback", bundle: .module),
             message: String(
                 localized: "We will get back to you soon. Follow us on Xiaohongshu to see fixes and updates first.",
                 bundle: .module
             ),
-            action: .followXiaohongshu
+            primaryAction: SupportNotice.PrimaryAction(
+                title: String(localized: "Xiaohongshu", bundle: .module)
+            ) {
+                feedbackFollowUpPreference.markFollowed()
+                openXiaohongshu()
+            }
         )
     }
 
-    private func alert(for notice: Notice) -> Alert {
-        let title = Text(notice.title)
-        let message = Text(notice.message)
-        let ok = Text(String(localized: "OK", bundle: .module))
-
-        switch notice.action {
-        case .followXiaohongshu:
-            return Alert(
-                title: title,
-                message: message,
-                primaryButton: .default(
-                    Text(String(localized: "Xiaohongshu", bundle: .module))
-                ) {
-                    feedbackFollowUpPreference.markFollowed()
-                    openXiaohongshu()
-                },
-                secondaryButton: .cancel(ok)
-            )
-        case nil:
-            return Alert(title: title, message: message, dismissButton: .default(ok))
-        }
-    }
-
-    private func copyWeChatID() {
+    private func copyWeChatID(presentation: SupportActionPresenter) {
         UIPasteboard.general.string = SupportConstants.weChatID
-        notice = Notice(
-            title: String(localized: "WeChat ID Copied", bundle: .module),
-            message: SupportConstants.weChatID
+        presentation.present(
+            SupportNotice(
+                title: String(localized: "WeChat ID Copied", bundle: .module),
+                message: SupportConstants.weChatID
+            )
         )
     }
 
