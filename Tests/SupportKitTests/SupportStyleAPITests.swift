@@ -12,6 +12,11 @@ struct SupportStyleAPITests {
         #expect(FeedbackPurpose.featureSuggestion.action != .emailFeedback)
     }
 
+    @Test("Every feedback purpose enters the email flow directly")
+    func feedbackPurposesEnterEmailDirectly() {
+        #expect(FeedbackPurpose.allCases.allSatisfy { $0.entryRoute == .email })
+    }
+
     @Test("Feedback purposes expose the preferred settings symbols")
     func feedbackPurposeSymbols() {
         #expect(FeedbackPurpose.featureSuggestion.suggestedSystemImage == "sparkles")
