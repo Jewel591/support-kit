@@ -27,9 +27,7 @@ public struct SupportView<Style: SupportStyle>: View {
     @State private var presentedSheet: PresentedSheet?
     @State private var notice: Notice?
     @State private var pendingMailFailure = false
-    @State private var selectedFeedbackPurpose: FeedbackPurpose?
     @State private var mailPurpose = FeedbackPurpose.problemReport
-    @State private var queuedMailPurpose: FeedbackPurpose?
 
     public init(style: Style) {
         self.init(actions: nil, style: style)
@@ -73,24 +71,6 @@ public struct SupportView<Style: SupportStyle>: View {
                     dismissButton: .default(Text(String(localized: "OK", bundle: .module)))
                 )
             }
-            .confirmationDialog(
-                SupportCopy.chooseFeedbackChannel,
-                isPresented: isChoosingFeedbackChannel,
-                titleVisibility: .visible,
-                presenting: selectedFeedbackPurpose
-            ) { purpose in
-                if let reviewURL = host?.reviewURL {
-                    Button(SupportCopy.appStoreReview) {
-                        open(reviewURL)
-                    }
-                }
-                Button(SupportCopy.emailFeedback) {
-                    queuedMailPurpose = purpose
-                }
-                Button(SupportCopy.cancel, role: .cancel) {}
-            } message: { _ in
-                Text(SupportCopy.feedbackChannelExplanation)
-            }
     }
 
     private var presentedConfiguration: SupportStyleConfiguration {
@@ -115,7 +95,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 title: purpose.title(),
                 symbol: purpose.suggestedSystemImage,
                 accessory: .disclosure,
-                handler: { beginFeedback(for: purpose) }
+                handler: { presentEmail(for: purpose) }
             )
         }
 
@@ -239,31 +219,6 @@ public struct SupportView<Style: SupportStyle>: View {
             accessory: accessory,
             handler: handler
         )
-    }
-
-    private var isChoosingFeedbackChannel: Binding<Bool> {
-        Binding(
-            get: { selectedFeedbackPurpose != nil },
-            set: { isPresented in
-                if !isPresented {
-                    selectedFeedbackPurpose = nil
-                    guard let purpose = queuedMailPurpose else { return }
-                    queuedMailPurpose = nil
-                    Task { @MainActor in
-                        await Task.yield()
-                        presentEmail(for: purpose)
-                    }
-                }
-            }
-        )
-    }
-
-    private func beginFeedback(for purpose: FeedbackPurpose) {
-        guard FeedbackPurpose.shouldChooseChannel(reviewURL: host?.reviewURL) else {
-            presentEmail(for: purpose)
-            return
-        }
-        selectedFeedbackPurpose = purpose
     }
 
     private func presentEmail(for purpose: FeedbackPurpose) {
