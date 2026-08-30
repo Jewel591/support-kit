@@ -1,10 +1,16 @@
 import Foundation
 
+enum FeedbackEntryRoute: Equatable {
+    case email
+}
+
 enum FeedbackPurpose: String, CaseIterable, Identifiable {
     case featureSuggestion
     case problemReport
 
     var id: String { rawValue }
+
+    var entryRoute: FeedbackEntryRoute { .email }
 
     var action: SupportAction {
         switch self {

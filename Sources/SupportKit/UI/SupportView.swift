@@ -103,7 +103,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 title: purpose.title(),
                 symbol: purpose.suggestedSystemImage,
                 accessory: .disclosure,
-                handler: { presentEmail(for: purpose) }
+                handler: { enterFeedback(for: purpose) }
             )
         }
 
@@ -227,6 +227,13 @@ public struct SupportView<Style: SupportStyle>: View {
             accessory: accessory,
             handler: handler
         )
+    }
+
+    private func enterFeedback(for purpose: FeedbackPurpose) {
+        switch purpose.entryRoute {
+        case .email:
+            presentEmail(for: purpose)
+        }
     }
 
     private func presentEmail(for purpose: FeedbackPurpose) {
