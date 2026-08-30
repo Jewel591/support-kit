@@ -78,29 +78,54 @@ struct SupportStyleAPITests {
     @Test("Interactive items route presentation through the invoking control")
     func actionPresentationUsesInvokingControl() throws {
         let shareURL = try #require(URL(string: "https://example.com/app"))
+        let expectedNotice = SupportNotice(title: "Notice", message: "Message")
         let item = item(id: .shareApp) { presenter in
             presenter.present(.share(shareURL))
+            presenter.present(expectedNotice)
         }
         var firstControlSheets: [String] = []
         var secondControlSheets: [String] = []
+        var firstControlNotices: [String] = []
+        var secondControlNotices: [String] = []
         let firstControl = SupportActionPresenter(
             sheetHandler: { firstControlSheets.append($0.id) },
-            noticeHandler: { _ in }
+            noticeHandler: { firstControlNotices.append($0.title) }
         )
         let secondControl = SupportActionPresenter(
             sheetHandler: { secondControlSheets.append($0.id) },
-            noticeHandler: { _ in }
+            noticeHandler: { secondControlNotices.append($0.title) }
         )
 
         item.handler?(firstControl)
 
         #expect(firstControlSheets == ["share"])
         #expect(secondControlSheets.isEmpty)
+        #expect(firstControlNotices == ["Notice"])
+        #expect(secondControlNotices.isEmpty)
 
         item.handler?(secondControl)
 
         #expect(firstControlSheets == ["share"])
         #expect(secondControlSheets == ["share"])
+        #expect(firstControlNotices == ["Notice"])
+        #expect(secondControlNotices == ["Notice"])
+    }
+
+    @MainActor
+    @Test("Mail follow-up notice waits for sheet dismissal")
+    func mailFollowUpWaitsForSheetDismissal() {
+        let expectedNotice = SupportNotice(title: "Thanks", message: "Follow us")
+        var presentation = SupportActionPresentationState()
+
+        presentation.queueNoticeAfterSheetDismissal(expectedNotice)
+
+        #expect(presentation.notice == nil)
+        #expect(presentation.pendingNotice?.title == "Thanks")
+
+        presentation.handleSheetDismissal()
+
+        #expect(presentation.notice?.title == "Thanks")
+        #expect(presentation.pendingNotice == nil)
     }
 
     @MainActor

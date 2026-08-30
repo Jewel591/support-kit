@@ -50,6 +50,23 @@ struct SupportActionPresenter {
     }
 }
 
+@MainActor
+struct SupportActionPresentationState {
+    var presentedSheet: SupportPresentedSheet?
+    var notice: SupportNotice?
+    private(set) var pendingNotice: SupportNotice?
+
+    mutating func queueNoticeAfterSheetDismissal(_ notice: SupportNotice?) {
+        pendingNotice = notice
+    }
+
+    mutating func handleSheetDismissal() {
+        guard let pendingNotice else { return }
+        self.pendingNotice = nil
+        notice = pendingNotice
+    }
+}
+
 /// Owns presentation state for exactly one rendered support control.
 ///
 /// A custom style may emit several root rows into a `Form`. Keeping state here ensures only the
@@ -60,9 +77,7 @@ struct SupportActionPresentationHost<Content: View>: View {
     let handler: (@MainActor (SupportActionPresenter) -> Void)?
     let content: Content
 
-    @State private var presentedSheet: SupportPresentedSheet?
-    @State private var notice: SupportNotice?
-    @State private var pendingNotice: SupportNotice?
+    @State private var presentation = SupportActionPresentationState()
 
     var body: some View {
         ZStack {
@@ -77,34 +92,30 @@ struct SupportActionPresentationHost<Content: View>: View {
                 content
             }
         }
-        .sheet(item: $presentedSheet, onDismiss: handleSheetDismissal) { sheet in
+        .sheet(item: $presentation.presentedSheet, onDismiss: {
+            presentation.handleSheetDismissal()
+        }) { sheet in
             switch sheet {
             case let .mail(mail, failureNotice, sentNotice):
                 FeedbackMailComposer(
                     mail: mail,
-                    onFailure: { pendingNotice = failureNotice },
-                    onSent: { pendingNotice = sentNotice() }
+                    onFailure: { presentation.queueNoticeAfterSheetDismissal(failureNotice) },
+                    onSent: { presentation.queueNoticeAfterSheetDismissal(sentNotice()) }
                 )
             case let .share(appStoreURL):
                 SupportActivityView(items: [appStoreURL])
             }
         }
-        .alert(item: $notice) { notice in
+        .alert(item: $presentation.notice) { notice in
             alert(for: notice)
         }
     }
 
     private var presenter: SupportActionPresenter {
         SupportActionPresenter(
-            sheetHandler: { presentedSheet = $0 },
-            noticeHandler: { notice = $0 }
+            sheetHandler: { presentation.presentedSheet = $0 },
+            noticeHandler: { presentation.notice = $0 }
         )
-    }
-
-    private func handleSheetDismissal() {
-        guard let pendingNotice else { return }
-        self.pendingNotice = nil
-        notice = pendingNotice
     }
 
     private func alert(for notice: SupportNotice) -> Alert {
