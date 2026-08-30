@@ -12,6 +12,7 @@ extension MFMailComposeViewController: MailComposerDismissing {}
 struct FeedbackMailComposer: UIViewControllerRepresentable {
     let mail: FeedbackMail
     let onFailure: @MainActor () -> Void
+    let onSent: @MainActor () -> Void
 
     func makeUIViewController(context: Context) -> MFMailComposeViewController {
         let controller = MFMailComposeViewController()
@@ -28,15 +29,20 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
     ) {}
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onFailure: onFailure)
+        Coordinator(onFailure: onFailure, onSent: onSent)
     }
 
     @MainActor
     final class Coordinator: NSObject, @preconcurrency MFMailComposeViewControllerDelegate {
         private let onFailure: @MainActor () -> Void
+        private let onSent: @MainActor () -> Void
 
-        init(onFailure: @escaping @MainActor () -> Void) {
+        init(
+            onFailure: @escaping @MainActor () -> Void,
+            onSent: @escaping @MainActor () -> Void
+        ) {
             self.onFailure = onFailure
+            self.onSent = onSent
         }
 
         func mailComposeController(
@@ -52,11 +58,9 @@ struct FeedbackMailComposer: UIViewControllerRepresentable {
             result: MFMailComposeResult,
             error: Error?
         ) {
-            let shouldOfferFallback = Self.shouldOfferFallback(
-                result: result,
-                error: error
-            )
-            if shouldOfferFallback {
+            if result == .sent {
+                onSent()
+            } else if Self.shouldOfferFallback(result: result, error: error) {
                 onFailure()
             }
             controller.dismiss(animated: true, completion: nil)

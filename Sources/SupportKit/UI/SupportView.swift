@@ -12,9 +12,14 @@ public struct SupportView<Style: SupportStyle>: View {
     }
 
     private struct Notice: Identifiable {
+        enum Action {
+            case followXiaohongshu
+        }
+
         let id = UUID()
         let title: String
         let message: String
+        var action: Action? = nil
     }
 
     @Environment(\.openURL) private var openURL
@@ -23,10 +28,12 @@ public struct SupportView<Style: SupportStyle>: View {
     private let actions: [SupportAction]?
     private let appInfo: SupportAppInfo
     private let host: SupportHost?
+    private let feedbackFollowUpPreference = FeedbackFollowUpPreference()
 
     @State private var presentedSheet: PresentedSheet?
     @State private var notice: Notice?
     @State private var pendingMailFailure = false
+    @State private var pendingMailSent = false
     @State private var mailPurpose = FeedbackPurpose.problemReport
 
     public init(style: Style) {
@@ -56,7 +63,8 @@ public struct SupportView<Style: SupportStyle>: View {
                 case .mail:
                     FeedbackMailComposer(
                         mail: FeedbackMail(app: appInfo, purpose: mailPurpose),
-                        onFailure: { pendingMailFailure = true }
+                        onFailure: { pendingMailFailure = true },
+                        onSent: { pendingMailSent = true }
                     )
                 case .share:
                     if let appStoreURL = host?.appStoreURL {
@@ -65,11 +73,7 @@ public struct SupportView<Style: SupportStyle>: View {
                 }
             }
             .alert(item: $notice) { notice in
-                Alert(
-                    title: Text(notice.title),
-                    message: Text(notice.message),
-                    dismissButton: .default(Text(String(localized: "OK", bundle: .module)))
-                )
+                alert(for: notice)
             }
     }
 
@@ -79,9 +83,13 @@ public struct SupportView<Style: SupportStyle>: View {
     }
 
     private func handleSheetDismissal() {
-        guard pendingMailFailure else { return }
-        pendingMailFailure = false
-        showEmailFallback()
+        if pendingMailFailure {
+            pendingMailFailure = false
+            showEmailFallback()
+        } else if pendingMailSent {
+            pendingMailSent = false
+            showFeedbackFollowUpIfNeeded()
+        }
     }
 
     private var configuration: SupportStyleConfiguration {
@@ -248,6 +256,41 @@ public struct SupportView<Style: SupportStyle>: View {
                 bundle: .module
             )
         )
+    }
+
+    private func showFeedbackFollowUpIfNeeded() {
+        guard feedbackFollowUpPreference.shouldPrompt else { return }
+        notice = Notice(
+            title: String(localized: "Thanks for your feedback", bundle: .module),
+            message: String(
+                localized: "We will get back to you soon. Follow us on Xiaohongshu to see fixes and updates first.",
+                bundle: .module
+            ),
+            action: .followXiaohongshu
+        )
+    }
+
+    private func alert(for notice: Notice) -> Alert {
+        let title = Text(notice.title)
+        let message = Text(notice.message)
+        let ok = Text(String(localized: "OK", bundle: .module))
+
+        switch notice.action {
+        case .followXiaohongshu:
+            return Alert(
+                title: title,
+                message: message,
+                primaryButton: .default(
+                    Text(String(localized: "Xiaohongshu", bundle: .module))
+                ) {
+                    feedbackFollowUpPreference.markFollowed()
+                    openXiaohongshu()
+                },
+                secondaryButton: .cancel(ok)
+            )
+        case nil:
+            return Alert(title: title, message: message, dismissButton: .default(ok))
+        }
     }
 
     private func copyWeChatID() {
