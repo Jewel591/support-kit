@@ -75,9 +75,38 @@ struct SupportStyleAPITests {
     }
 
     @MainActor
+    @Test("Interactive items route presentation through the invoking control")
+    func actionPresentationUsesInvokingControl() throws {
+        let shareURL = try #require(URL(string: "https://example.com/app"))
+        let item = item(id: .shareApp) { presenter in
+            presenter.present(.share(shareURL))
+        }
+        var firstControlSheets: [String] = []
+        var secondControlSheets: [String] = []
+        let firstControl = SupportActionPresenter(
+            sheetHandler: { firstControlSheets.append($0.id) },
+            noticeHandler: { _ in }
+        )
+        let secondControl = SupportActionPresenter(
+            sheetHandler: { secondControlSheets.append($0.id) },
+            noticeHandler: { _ in }
+        )
+
+        item.handler?(firstControl)
+
+        #expect(firstControlSheets == ["share"])
+        #expect(secondControlSheets.isEmpty)
+
+        item.handler?(secondControl)
+
+        #expect(firstControlSheets == ["share"])
+        #expect(secondControlSheets == ["share"])
+    }
+
+    @MainActor
     private func item(
         id: SupportAction,
-        handler: (@MainActor () -> Void)? = {}
+        handler: (@MainActor (SupportActionPresenter) -> Void)? = { _ in }
     ) -> SupportStyleConfiguration.Item {
         SupportStyleConfiguration.Item(
             id: id,

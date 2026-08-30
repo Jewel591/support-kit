@@ -83,7 +83,7 @@ public struct SupportStyleConfiguration {
     public struct Item: Identifiable {
         public let id: SupportAction
         let content: SupportActionContent
-        let handler: (@MainActor () -> Void)?
+        let handler: (@MainActor (SupportActionPresenter) -> Void)?
 
         init(
             id: SupportAction,
@@ -91,7 +91,7 @@ public struct SupportStyleConfiguration {
             suggestedIcon: Image,
             suggestedSystemImage: String,
             accessory: SupportAccessory,
-            handler: (@MainActor () -> Void)?
+            handler: (@MainActor (SupportActionPresenter) -> Void)?
         ) {
             self.id = id
             content = SupportActionContent(
@@ -191,14 +191,7 @@ public struct SupportActionRow<Label: View>: View {
     }
 
     public var body: some View {
-        if let handler = item.handler {
-            Button(action: handler) {
-                content
-            }
-            .buttonStyle(.plain)
-        } else {
-            content
-        }
+        SupportActionPresentationHost(handler: item.handler, content: content)
     }
 
     private var content: some View {
@@ -225,14 +218,7 @@ public struct SupportActionLink<Label: View>: View {
     }
 
     public var body: some View {
-        if let handler = item.handler {
-            Button(action: handler) {
-                content
-            }
-            .buttonStyle(.plain)
-        } else {
-            content
-        }
+        SupportActionPresentationHost(handler: item.handler, content: content)
     }
 
     private var content: some View {
