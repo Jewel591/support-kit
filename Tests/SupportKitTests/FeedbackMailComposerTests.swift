@@ -42,12 +42,36 @@ struct FeedbackMailComposerTests {
         )
     }
 
+    @Test("Only sent mail triggers the success callback")
+    func sentResult() {
+        var sentCount = 0
+        var failureCount = 0
+        let coordinator = FeedbackMailComposer.Coordinator(
+            onFailure: { failureCount += 1 },
+            onSent: { sentCount += 1 }
+        )
+        let controller = MailComposerDismissSpy {}
+
+        for result in [
+            MFMailComposeResult.cancelled,
+            .saved,
+            .failed,
+            .sent,
+        ] {
+            coordinator.finish(controller: controller, result: result, error: nil)
+        }
+
+        #expect(sentCount == 1)
+        #expect(failureCount == 1)
+    }
+
     @Test("Failure is recorded before dismissing only the provided mail composer")
     func failurePrecedesMailComposerDismissal() {
         var events: [String] = []
-        let coordinator = FeedbackMailComposer.Coordinator {
-            events.append("fallback")
-        }
+        let coordinator = FeedbackMailComposer.Coordinator(
+            onFailure: { events.append("fallback") },
+            onSent: { events.append("sent") }
+        )
         let controller = MailComposerDismissSpy {
             events.append("dismiss")
         }

@@ -157,58 +157,6 @@
         }
       }
     },
-    "Choose a Feedback Channel" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Feedback-Kanal auswählen"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elige un canal para enviar tus comentarios"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisissez un canal"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フィードバック方法を選択"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "피드백 방법 선택"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Escolha um canal de feedback"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "选择反馈方式"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選擇意見回饋方式"
-          }
-        }
-      }
-    },
     "Contact Us" : {
       "localizations" : {
         "de" : {
@@ -725,58 +673,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "語言/地區："
-          }
-        }
-      }
-    },
-    "Leave a Review on the App Store" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rezension im App Store verfassen"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Escribir una reseña en el App Store"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laisser un avis sur l’App Store"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Storeにレビューを投稿"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App Store에 리뷰 남기기"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deixar uma avaliação na App Store"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在 App Store 留言"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在 App Store 留言"
           }
         }
       }
@@ -1354,6 +1250,58 @@
         }
       }
     },
+    "Thanks for your feedback" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danke für dein Feedback"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gracias por tus comentarios"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merci pour votre retour"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フィードバックありがとうございます"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "의견을 보내주셔서 감사합니다"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agradecemos seu feedback"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "感谢你的反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "感謝你的意見回饋"
+          }
+        }
+      }
+    },
     "Version" : {
       "localizations" : {
         "de" : {
@@ -1406,54 +1354,54 @@
         }
       }
     },
-    "We regularly read and respond to App Store reviews." : {
+    "We will get back to you soon. Follow us on Xiaohongshu to see fixes and updates first." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wir lesen und beantworten regelmäßig App-Store-Rezensionen."
+            "value" : "Wir melden uns bald bei dir. Folge uns auf Xiaohongshu, um zuerst von Fehlerbehebungen und Updates zu erfahren."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Revisamos periódicamente las reseñas del App Store y respondemos a ellas."
+            "value" : "Nos pondremos en contacto contigo pronto. Síguenos en Xiaohongshu para enterarte antes que nadie de las correcciones y novedades."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nous consultons régulièrement les avis sur l’App Store et y répondons."
+            "value" : "Nous vous répondrons bientôt. Suivez-nous sur Xiaohongshu pour découvrir en avant-première les correctifs et les nouveautés."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App Storeのレビューを定期的に確認し、返信しています。"
+            "value" : "近日中にご連絡します。小紅書をフォローして、修正やアップデートの最新情報をいち早くご覧ください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App Store 리뷰를 정기적으로 확인하고 답변드리고 있습니다."
+            "value" : "곧 답변드리겠습니다. 샤오홍슈를 팔로우하고 수정 사항과 업데이트 소식을 가장 먼저 확인하세요."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lemos regularmente as avaliações na App Store e respondemos a elas."
+            "value" : "Retornaremos em breve. Siga-nos no Xiaohongshu para saber primeiro sobre correções e novidades."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我们会定期查看并回复 App Store 评论。"
+            "value" : "我们会尽快回复你。关注我们的小红书，第一时间了解问题修复和更新动态。"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "我們會定期查看並回覆 App Store 評論。"
+            "value" : "我們會盡快回覆你。關注我們的小紅書，第一時間掌握問題修正與更新動態。"
           }
         }
       }
