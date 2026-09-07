@@ -252,7 +252,7 @@ public struct SupportView<Style: SupportStyle>: View {
         presentation.present(
             SupportNotice(
                 title: String(localized: "WeChat ID Copied", bundle: .module),
-                message: SupportConstants.weChatID
+                message: SupportCopy.weChatIDCopiedMessage(appName: appInfo.name)
             )
         )
     }

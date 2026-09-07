@@ -21,4 +21,23 @@ struct SupportCopyTests {
             #expect(SupportCopy.fiveStarRating(locale: Locale(identifier: identifier)) == copy)
         }
     }
+
+    @Test
+    func weChatIDCopiedMessageNamesTheAppSoTheStudioKnowsWhereTheContactCameFrom() {
+        let expected = [
+            "en": "ivensliao007\nPlease mention MONO when adding.",
+            "zh-Hans": "ivensliao007\n添加时请注明来自 MONO。",
+            "zh-Hant": "ivensliao007\n加好友時請註明來自 MONO。",
+            "ja": "ivensliao007\n追加の際は「MONO」からとお伝えください。",
+        ]
+
+        for (identifier, copy) in expected {
+            #expect(
+                SupportCopy.weChatIDCopiedMessage(
+                    appName: "MONO",
+                    locale: Locale(identifier: identifier)
+                ) == copy
+            )
+        }
+    }
 }
