@@ -730,6 +730,58 @@
         }
       }
     },
+    "Please mention %@ when adding." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte erwähne %@ beim Hinzufügen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, menciona %@ al agregarme."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merci de mentionner %@ lors de l'ajout."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加の際は「%@」からとお伝えください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가할 때 %@에서 왔다고 알려주세요."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, mencione %@ ao adicionar."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加时请注明来自 %@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加好友時請註明來自 %@。"
+          }
+        }
+      }
+    },
     "Privacy Policy" : {
       "localizations" : {
         "de" : {
