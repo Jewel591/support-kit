@@ -8,12 +8,13 @@ struct FeedbackMail: Equatable {
     init(
         app: SupportAppInfo,
         purpose: FeedbackPurpose = .problemReport,
+        diagnostics: String? = nil,
         locale: Locale = .current
     ) {
         recipient = SupportConstants.feedbackEmail
         subject = "[\(app.name) \(app.version)] "
             + purpose.title(locale: locale)
-        body = """
+        let template = """
         \(purpose.emailPrompt(locale: locale))
 
 
@@ -24,6 +25,13 @@ struct FeedbackMail: Equatable {
         \(SupportLocalization.string("Device Model:", locale: locale)) \(app.hardwareModel)
         \(SupportLocalization.string("Language/Region:", locale: locale)) \(app.localeIdentifier)
         """
+        if purpose == .problemReport,
+           let diagnostics = diagnostics?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !diagnostics.isEmpty {
+            body = template + "\n\n" + diagnostics
+        } else {
+            body = template
+        }
     }
 
     var mailtoURL: URL? {

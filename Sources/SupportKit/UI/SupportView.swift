@@ -8,6 +8,7 @@ public struct SupportView<Style: SupportStyle>: View {
 
     private let style: Style
     private let actions: [SupportAction]?
+    private let feedbackDiagnostics: String?
     private let appInfo: SupportAppInfo
     private let host: SupportHost?
     private let feedbackFollowUpPreference = FeedbackFollowUpPreference()
@@ -21,12 +22,14 @@ public struct SupportView<Style: SupportStyle>: View {
     /// Unsupported actions and actions unavailable for the current host are omitted. Duplicate
     /// actions use their first occurrence. The host owns which surface receives each action;
     /// SupportKit continues to own the behavior of every item it supplies.
-    public init(actions: [SupportAction], style: Style) {
-        self.init(actions: Optional(actions), style: style)
+    /// 当前错误的技术诊断只附加到问题反馈邮件；不得包含账号、凭据或用户业务内容。
+    public init(actions: [SupportAction], feedbackDiagnostics: String? = nil, style: Style) {
+        self.init(actions: Optional(actions), feedbackDiagnostics: feedbackDiagnostics, style: style)
     }
 
-    private init(actions: [SupportAction]?, style: Style) {
+    private init(actions: [SupportAction]?, feedbackDiagnostics: String? = nil, style: Style) {
         self.actions = actions
+        self.feedbackDiagnostics = feedbackDiagnostics
         self.style = style
         appInfo = .current
         host = SupportHostCatalog.currentHost
@@ -196,7 +199,7 @@ public struct SupportView<Style: SupportStyle>: View {
         for purpose: FeedbackPurpose,
         presentation: SupportActionPresenter
     ) {
-        let mail = FeedbackMail(app: appInfo, purpose: purpose)
+        let mail = feedbackMail(for: purpose)
         if MFMailComposeViewController.canSendMail() {
             presentation.present(
                 .mail(
@@ -218,6 +221,10 @@ public struct SupportView<Style: SupportStyle>: View {
                 }
             }
         }
+    }
+
+    func feedbackMail(for purpose: FeedbackPurpose) -> FeedbackMail {
+        FeedbackMail(app: appInfo, purpose: purpose, diagnostics: feedbackDiagnostics)
     }
 
     private func emailFallbackNotice() -> SupportNotice {
@@ -282,7 +289,7 @@ public extension SupportView where Style == SystemSupportStyle {
         self.init(actions: nil, style: SystemSupportStyle())
     }
 
-    init(actions: [SupportAction]) {
-        self.init(actions: actions, style: SystemSupportStyle())
+    init(actions: [SupportAction], feedbackDiagnostics: String? = nil) {
+        self.init(actions: actions, feedbackDiagnostics: feedbackDiagnostics, style: SystemSupportStyle())
     }
 }
