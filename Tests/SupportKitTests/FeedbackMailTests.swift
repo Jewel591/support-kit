@@ -81,4 +81,33 @@ struct FeedbackMailTests {
         #expect(components?.queryItems?.first(where: { $0.name == "subject" })?.value == mail.subject)
         #expect(components?.queryItems?.first(where: { $0.name == "body" })?.value == mail.body)
     }
+
+    @Test("#21: Problem feedback carries the current failure into both mail routes")
+    func currentFailureDiagnostics() {
+        let diagnostics = "reason: containerUnavailable\nerror: SQLite 13 & I/O\n设备刚解锁"
+        let mail = FeedbackMail(app: app, diagnostics: diagnostics)
+        #expect(mail.body.contains(diagnostics))
+        #expect(mail.body.components(separatedBy: diagnostics).count == 2)
+        #expect(mail.body.contains("2.3 (45)"))
+        let components = mail.mailtoURL.flatMap { URLComponents(url: $0, resolvingAgainstBaseURL: false) }
+        #expect(components?.queryItems?.first(where: { $0.name == "body" })?.value == mail.body)
+    }
+
+    @Test("#21: Blank diagnostics and feature suggestions preserve their normal templates")
+    func diagnosticsStayScopedToProblems() {
+        #expect(FeedbackMail(app: app, diagnostics: " \n ") == FeedbackMail(app: app))
+        let feature = FeedbackMail(app: app, purpose: .featureSuggestion)
+        #expect(FeedbackMail(app: app, purpose: .featureSuggestion, diagnostics: "failure details") == feature)
+    }
+
+    @MainActor
+    @Test("#21: The public support surface forwards diagnostics only to problem feedback")
+    func surfaceForwardsDiagnostics() {
+        let diagnostics = "reason: containerUnavailable\nerror: SQLite 13"
+        let view = SupportView(actions: [.problemFeedback, .featureSuggestion], feedbackDiagnostics: diagnostics)
+        #expect(view.feedbackMail(for: .problemReport).body.contains(diagnostics))
+        #expect(!view.feedbackMail(for: .featureSuggestion).body.contains(diagnostics))
+        let normal = SupportView(actions: [.problemFeedback])
+        #expect(!normal.feedbackMail(for: .problemReport).body.contains(diagnostics))
+    }
 }

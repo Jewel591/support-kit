@@ -9,7 +9,7 @@ description: 在任何 Apple App 里实现、迁移或排查「联系我们 / �
 
 全线 Apple App 的支持/联系入口唯一正身是
 **[Jewel591/support-kit](https://github.com/Jewel591/support-kit)**。
-产品边界读仓库 `CLAUDE.md`，用法读 `README.md`；playbook 裁决在 `tech-stack TOOL-19`。
+产品边界读仓库 `AGENTS.md`，用法读 `README.md`；playbook 裁决在 `tech-stack TOOL-19`。
 
 ## 何时触发
 
@@ -42,9 +42,16 @@ description: 在任何 Apple App 里实现、迁移或排查「联系我们 / �
    ⛔ 不在宿主侧硬塞 App Store 链接绕过。
 6. ⛔ 公开仓库与反馈模板里永不出现 secrets、API token、用户标识或账号邮箱。
 
+## 错误页反馈
+
+错误页通过 `SupportKit.SupportView(actions: [.problemFeedback], feedbackDiagnostics: snapshot, style: ...)`
+接入，`snapshot` 是宿主已有的当前错误技术快照；不包含账号、凭据或用户业务内容。
+`feedbackDiagnostics` 默认为 `nil`，只进入问题反馈正文，不影响功能建议。
+邮件编辑器、`mailto` 降级和发送确认仍由 Kit 负责；宿主不得再实现第二套邮件动作。
+
 ## 宿主测试边界
 
-- 宿主只测试自己的 bundle identity、各 surface 的 action 清单，以及 action 到产品页面 / 样式的映射。
+- 宿主只测试自己的 bundle identity、各 surface 的 action 清单、当前错误到诊断快照的映射，以及 action 到产品页面 / 样式的映射。
 - 动作控件、命中区、未知宿主 fail closed、邮件诊断拼装、URL fallback 与 App Store 动作属于 SupportKit；这些固定规则只在 Kit 包测试一次。
 - 不在 XCTest 中扫描 `project.pbxproj`、import、旧类型名或源码字符串；装配与旧实现残留由 `support-kit-lint` 负责。
 - 不调用真实邮件、URL scheme 或 App Store。若多个 App 复制同一个动作 fake，先把缺失接缝收回 Kit。

@@ -43,11 +43,25 @@ Use `SupportView()` when a page should show the complete catalog. SupportKit del
 primary/secondary classification: first-level versus secondary-page placement is a product UI
 decision, not a package behavior rule.
 
-The default `SystemSupportStyle` uses native `List` and `Section` components without decorative
-leading icons. Feature Suggestions and Problem Feedback are separate actions; each lets the user
-choose between a public App Store review and a private email with the appropriate subject, prompt,
-and device diagnostics. When the host has no App Store review destination, either row opens email
-directly instead of showing a redundant single-choice channel dialog.
+默认 `SystemSupportStyle` 使用系统 `List` 和 `Section`，不添加装饰性前置图标。
+功能建议与问题反馈是两个独立动作，均直接打开邮件，并按反馈类型填写主题、提示和设备信息。
+
+### 当前错误的诊断信息
+
+错误页可以通过 `feedbackDiagnostics` 提供当前错误快照，让用户从该页直接反馈：
+
+```swift
+SupportKit.SupportView(
+    actions: [.problemFeedback],
+    feedbackDiagnostics: failureDiagnostics,
+    style: AppSettingsSupportStyle()
+)
+```
+
+该参数默认为 `nil`，只补充问题反馈的邮件正文；功能建议和既有入口保持原行为。
+系统邮件编辑器与 `mailto` 降级使用相同正文，用户确认发送后才会发出邮件。
+宿主只提供已取得的技术诊断快照，不包含账号、凭据或用户业务内容；Kit 不读取宿主数据库、
+日志文件或附件。无需自定义样式时，也可使用 `SupportView(actions:feedbackDiagnostics:)`。
 
 ## Custom UI
 
