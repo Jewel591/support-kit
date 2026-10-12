@@ -46,6 +46,34 @@ decision, not a package behavior rule.
 默认 `SystemSupportStyle` 使用系统 `List` 和 `Section`，不添加装饰性前置图标。
 功能建议与问题反馈是两个独立动作，均直接打开邮件，并按反馈类型填写主题、提示和设备信息。
 
+### 反馈邮件与送达对账
+
+功能建议与问题反馈一律通过 `mailto` 交给用户的默认邮件 App 发送，不使用 App 内邮件编辑器：
+App 内编辑器返回的「已发送」只代表邮件进入发件箱，发送失败时用户看不到（#24）。交给邮件 App 后，
+发送过程、报错与发件箱都在用户眼前。这条路径不支持附件，诊断信息写在正文里。
+
+每封邮件带一个随机反馈编号（`FB-` 加 8 位 Crockford Base32 字符），同时写在标题末尾和正文
+信息区，不含用户、设备或账号标识。正文开头提示用户：发送后会收到自动回复；几分钟内没收到，
+请检查邮件 App 的发件箱。自动回复由 support@ 邮箱配置，不在本包内。
+
+设备上没有能处理 `mailto` 的邮件 App 时，页面提示联系邮箱，并提供复制邮箱地址的按钮。
+
+SupportKit 不依赖统计 SDK。宿主用 `onSupportFeedbackEvent` 接收每次交接结果，自行上报：
+
+```swift
+SupportKit.SupportView(actions: [.featureSuggestion, .problemFeedback])
+    .onSupportFeedbackEvent { event in
+        analytics.capture("support_feedback_mail_handoff", properties: [
+            "feedback_id": event.feedbackID,
+            "kind": event.kind.rawValue,       // feature_suggestion | problem_report
+            "outcome": event.outcome.rawValue, // mail_app_opened | mail_app_unavailable
+        ])
+    }
+```
+
+`mail_app_opened` 只表示已跳转到邮件 App，不代表邮件已发出。送达率由收件端按反馈编号对账：
+收到的编号数 ÷ `mail_app_opened` 次数。
+
 ### 当前错误的诊断信息
 
 错误页可以通过 `feedbackDiagnostics` 提供当前错误快照，让用户从该页直接反馈：
@@ -59,7 +87,7 @@ SupportKit.SupportView(
 ```
 
 该参数默认为 `nil`，只补充问题反馈的邮件正文；功能建议和既有入口保持原行为。
-系统邮件编辑器与 `mailto` 降级使用相同正文，用户确认发送后才会发出邮件。
+邮件仍由用户在邮件 App 中确认发送。
 宿主只提供已取得的技术诊断快照，不包含账号、凭据或用户业务内容；Kit 不读取宿主数据库、
 日志文件或附件。无需自定义样式时，也可使用 `SupportView(actions:feedbackDiagnostics:)`。
 

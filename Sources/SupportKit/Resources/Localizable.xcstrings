@@ -53,6 +53,58 @@
         }
       }
     },
+    "After you send this email, we'll reply automatically to confirm we received it. If no confirmation arrives within a few minutes, it may not have been sent. Check the Outbox in your mail app." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach dem Senden bestätigen wir den Eingang mit einer automatischen Antwort. Kommt innerhalb weniger Minuten keine Bestätigung, wurde die E-Mail eventuell nicht gesendet. Sieh im Postausgang deiner Mail-App nach."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al enviarlo, te confirmaremos la recepción con una respuesta automática. Si no la recibes en unos minutos, es posible que no se haya enviado: revisa la bandeja de salida de tu app de correo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Après l’envoi, nous confirmerons la réception par une réponse automatique. Si elle n’arrive pas d’ici quelques minutes, l’e-mail n’a peut-être pas été envoyé : vérifiez la boîte d’envoi de votre app de messagerie."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送信後、受信確認の自動返信メールをお送りします。数分たっても届かない場合は送信されていない可能性があります。メールアプリの「送信トレイ」をご確認ください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내 주시면 접수 확인 메일이 자동으로 발송됩니다. 몇 분 안에 받지 못했다면 전송되지 않았을 수 있으니 메일 앱의 '보낼 편지함'을 확인해 주세요."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depois do envio, confirmaremos o recebimento com uma resposta automática. Se ela não chegar em alguns minutos, talvez o e-mail não tenha sido enviado: confira a caixa de saída do seu app de e-mail."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送后，我们收到会自动回复一封确认邮件。如果几分钟内没收到，说明邮件可能没发出去，请检查邮件 App 的「发件箱」。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "傳送後，我們收到會自動回覆一封確認電郵。如果幾分鐘內沒收到，代表電郵可能沒寄出，請檢查電郵 App 的「寄件匣」。"
+          }
+        }
+      }
+    },
     "App Version:" : {
       "localizations" : {
         "de" : {
@@ -205,6 +257,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請透過 support@weisenjoy.com 聯絡我們。"
+          }
+        }
+      }
+    },
+    "Copy Email Address" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Adresse kopieren"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar dirección de correo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier l’adresse e-mail"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールアドレスをコピー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일 주소 복사"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar endereço de e-mail"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制邮箱地址"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製電郵地址"
           }
         }
       }
@@ -469,6 +573,58 @@
         }
       }
     },
+    "Feedback ID:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feedback-ID:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID de comentario:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifiant du retour :"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フィードバックID:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "피드백 ID:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID do feedback:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反馈编号："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回饋編號："
+          }
+        }
+      }
+    },
     "Follow Us" : {
       "localizations" : {
         "de" : {
@@ -625,58 +781,6 @@
         }
       }
     },
-    "OK" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aceptar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "확인"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OK"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "好"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "好"
-          }
-        }
-      }
-    },
     "Official Website" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -726,6 +830,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "官方網站"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好"
           }
         }
       }
@@ -1198,58 +1354,6 @@
         }
       }
     },
-    "Thanks for your feedback" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Danke für dein Feedback"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gracias por tus comentarios"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Merci pour votre retour"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フィードバックありがとうございます"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "의견을 보내주셔서 감사합니다"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Agradecemos seu feedback"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "感谢你的反馈"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "感謝你的意見回饋"
-          }
-        }
-      }
-    },
     "Version" : {
       "localizations" : {
         "de" : {
@@ -1298,58 +1402,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本"
-          }
-        }
-      }
-    },
-    "We will get back to you soon. Follow us on Xiaohongshu to see fixes and updates first." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wir melden uns bald bei dir. Folge uns auf Xiaohongshu, um zuerst von Fehlerbehebungen und Updates zu erfahren."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nos pondremos en contacto contigo pronto. Síguenos en Xiaohongshu para enterarte antes que nadie de las correcciones y novedades."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nous vous répondrons bientôt. Suivez-nous sur Xiaohongshu pour découvrir en avant-première les correctifs et les nouveautés."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "近日中にご連絡します。小紅書をフォローして、修正やアップデートの最新情報をいち早くご覧ください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "곧 답변드리겠습니다. 샤오홍슈를 팔로우하고 수정 사항과 업데이트 소식을 가장 먼저 확인하세요."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Retornaremos em breve. Siga-nos no Xiaohongshu para saber primeiro sobre correções e novidades."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我们会尽快回复你。关注我们的小红书，第一时间了解问题修复和更新动态。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "我們會盡快回覆你。關注我們的小紅書，第一時間掌握問題修正與更新動態。"
           }
         }
       }

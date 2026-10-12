@@ -1,17 +1,16 @@
-import MessageUI
 import SwiftUI
 import UIKit
 
 @MainActor
 public struct SupportView<Style: SupportStyle>: View {
     @Environment(\.openURL) private var openURL
+    @Environment(\.supportFeedbackEventHandler) private var feedbackEventHandler
 
     private let style: Style
     private let actions: [SupportAction]?
     private let feedbackDiagnostics: String?
     private let appInfo: SupportAppInfo
     private let host: SupportHost?
-    private let feedbackFollowUpPreference = FeedbackFollowUpPreference()
 
     public init(style: Style) {
         self.init(actions: nil, style: style)
@@ -195,31 +194,40 @@ public struct SupportView<Style: SupportStyle>: View {
         }
     }
 
+    /// 一律交给用户的默认邮件 App 发送：发送过程、报错与发件箱都在用户眼前，
+    /// 不再使用 App 内邮件编辑器——它的「已发送」只代表进入发件箱，发不出去时用户毫无察觉。
     private func presentEmail(
         for purpose: FeedbackPurpose,
         presentation: SupportActionPresenter
     ) {
         let mail = feedbackMail(for: purpose)
-        if MFMailComposeViewController.canSendMail() {
-            presentation.present(
-                .mail(
-                    mail: mail,
-                    failureNotice: emailFallbackNotice(),
-                    sentNotice: feedbackFollowUpNotice
-                )
-            )
-            return
-        }
+        let kind = SupportFeedbackEvent.Kind(purpose)
         guard let url = mail.mailtoURL else {
-            presentation.present(emailFallbackNotice())
+            handOff(mail, kind: kind, accepted: false, presentation: presentation)
             return
         }
         openURL(url) { accepted in
             Task { @MainActor in
-                if !accepted {
-                    presentation.present(emailFallbackNotice())
-                }
+                handOff(mail, kind: kind, accepted: accepted, presentation: presentation)
             }
+        }
+    }
+
+    private func handOff(
+        _ mail: FeedbackMail,
+        kind: SupportFeedbackEvent.Kind,
+        accepted: Bool,
+        presentation: SupportActionPresenter
+    ) {
+        feedbackEventHandler?(
+            SupportFeedbackEvent(
+                feedbackID: mail.feedbackID.rawValue,
+                kind: kind,
+                outcome: accepted ? .mailAppOpened : .mailAppUnavailable
+            )
+        )
+        if !accepted {
+            presentation.present(Self.emailUnavailableNotice())
         }
     }
 
@@ -227,29 +235,17 @@ public struct SupportView<Style: SupportStyle>: View {
         FeedbackMail(app: appInfo, purpose: purpose, diagnostics: feedbackDiagnostics)
     }
 
-    private func emailFallbackNotice() -> SupportNotice {
+    static func emailUnavailableNotice() -> SupportNotice {
         SupportNotice(
             title: String(localized: "Email Unavailable", bundle: .module),
             message: String(
                 localized: "Contact us at support@weisenjoy.com.",
                 bundle: .module
-            )
-        )
-    }
-
-    private func feedbackFollowUpNotice() -> SupportNotice? {
-        guard feedbackFollowUpPreference.shouldPrompt else { return nil }
-        return SupportNotice(
-            title: String(localized: "Thanks for your feedback", bundle: .module),
-            message: String(
-                localized: "We will get back to you soon. Follow us on Xiaohongshu to see fixes and updates first.",
-                bundle: .module
             ),
             primaryAction: SupportNotice.PrimaryAction(
-                title: String(localized: "Xiaohongshu", bundle: .module)
+                title: String(localized: "Copy Email Address", bundle: .module)
             ) {
-                feedbackFollowUpPreference.markFollowed()
-                openXiaohongshu()
+                UIPasteboard.general.string = SupportConstants.feedbackEmail
             }
         )
     }

@@ -13,16 +13,10 @@ struct SupportNotice: Identifiable {
 }
 
 enum SupportPresentedSheet: Identifiable {
-    case mail(
-        mail: FeedbackMail,
-        failureNotice: SupportNotice,
-        sentNotice: @MainActor () -> SupportNotice?
-    )
     case share(URL)
 
     var id: String {
         switch self {
-        case .mail: "mail"
         case .share: "share"
         }
     }
@@ -54,17 +48,6 @@ struct SupportActionPresenter {
 struct SupportActionPresentationState {
     var presentedSheet: SupportPresentedSheet?
     var notice: SupportNotice?
-    private(set) var pendingNotice: SupportNotice?
-
-    mutating func queueNoticeAfterSheetDismissal(_ notice: SupportNotice?) {
-        pendingNotice = notice
-    }
-
-    mutating func handleSheetDismissal() {
-        guard let pendingNotice else { return }
-        self.pendingNotice = nil
-        notice = pendingNotice
-    }
 }
 
 /// Owns presentation state for exactly one rendered support control.
@@ -92,16 +75,8 @@ struct SupportActionPresentationHost<Content: View>: View {
                 content
             }
         }
-        .sheet(item: $presentation.presentedSheet, onDismiss: {
-            presentation.handleSheetDismissal()
-        }) { sheet in
+        .sheet(item: $presentation.presentedSheet) { sheet in
             switch sheet {
-            case let .mail(mail, failureNotice, sentNotice):
-                FeedbackMailComposer(
-                    mail: mail,
-                    onFailure: { presentation.queueNoticeAfterSheetDismissal(failureNotice) },
-                    onSent: { presentation.queueNoticeAfterSheetDismissal(sentNotice()) }
-                )
             case let .share(appStoreURL):
                 SupportActivityView(items: [appStoreURL])
             }

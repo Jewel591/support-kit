@@ -112,23 +112,6 @@ struct SupportStyleAPITests {
     }
 
     @MainActor
-    @Test("Mail follow-up notice waits for sheet dismissal")
-    func mailFollowUpWaitsForSheetDismissal() {
-        let expectedNotice = SupportNotice(title: "Thanks", message: "Follow us")
-        var presentation = SupportActionPresentationState()
-
-        presentation.queueNoticeAfterSheetDismissal(expectedNotice)
-
-        #expect(presentation.notice == nil)
-        #expect(presentation.pendingNotice?.title == "Thanks")
-
-        presentation.handleSheetDismissal()
-
-        #expect(presentation.notice?.title == "Thanks")
-        #expect(presentation.pendingNotice == nil)
-    }
-
-    @MainActor
     private func item(
         id: SupportAction,
         handler: (@MainActor (SupportActionPresenter) -> Void)? = { _ in }
