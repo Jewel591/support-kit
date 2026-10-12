@@ -18,6 +18,7 @@ description: 在任何 Apple App 里实现、迁移或排查「联系我们 / �
 - `support-kit-lint` 红灯
 - 新产品上架，要登记 Bundle ID / App Store ID
 - 排查评分或分享入口不出现（多半是未知宿主 fail closed，见规则 4）
+- 排查反馈邮件没收到、滞留发件箱，或要统计反馈送达率
 
 ## 硬性规则
 
@@ -47,7 +48,24 @@ description: 在任何 Apple App 里实现、迁移或排查「联系我们 / �
 错误页通过 `SupportKit.SupportView(actions: [.problemFeedback], feedbackDiagnostics: snapshot, style: ...)`
 接入，`snapshot` 是宿主已有的当前错误技术快照；不包含账号、凭据或用户业务内容。
 `feedbackDiagnostics` 默认为 `nil`，只进入问题反馈正文，不影响功能建议。
-邮件编辑器、`mailto` 降级和发送确认仍由 Kit 负责；宿主不得再实现第二套邮件动作。
+邮件动作由 Kit 负责；宿主不得再实现第二套邮件动作。
+
+## 反馈邮件与送达边界
+
+2.3.0 起（[#24](https://github.com/Jewel591/support-kit/issues/24)），功能建议与问题反馈一律通过
+`mailto` 交给用户的邮件 App，不再使用 App 内邮件编辑器：编辑器返回的「已发送」只表示进入发件箱，
+发送失败时用户看不到。每封邮件带随机反馈编号 `FB-` + 8 位 Crockford Base32（标题末尾与正文），
+正文开头提示用户会收到自动回复、没收到请查发件箱。
+
+- 宿主用 `.onSupportFeedbackEvent { event in ... }` 接收交接结果，上报到自己的统计系统；
+  写法照 MONO 的 `support_feedback_mail_handoff`（`feedback_id` / `kind` / `outcome` / `entry_surface`）。
+  每个含 `.featureSuggestion` 或 `.problemFeedback` 的 `SupportView` 都要接，否则该入口不进分母。
+- `mail_app_opened` 只表示已跳到邮件 App，不代表已发出或已收到，不得据此对用户说「反馈已收到」。
+  送达率 = support@ 收到的不同编号数 ÷ `mail_app_opened` 的不同编号数，由收件端对账。
+- support@ 的自动回复是用户唯一的送达确认，但同一发件人每个自然日只回第一封（邮箱服务固定规则，已接受）。
+- 用户说「已发送但没回音」：先让对方查邮件 App 的发件箱，并取得重发时的实际报错；截图只能证明没发出，
+  定位不了账户认证、发信服务器或网络中的具体原因。
+- 存量 App 从 2.2.x 及以下升级到 2.3.0 时，发送后的「关注小红书」提示随编辑器一起移除，无需宿主处理。
 
 ## 宿主测试边界
 
