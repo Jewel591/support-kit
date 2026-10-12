@@ -138,6 +138,28 @@ struct FeedbackMailTests {
         #expect(!chinese.body.contains("Outbox"))
     }
 
+    /// #24：App 内邮件编辑器的「已发送」只代表进入发件箱，用户无从察觉发送失败。
+    /// 反馈必须交给用户的邮件 App；编辑器一旦被加回包内，这条测试变红。
+    @Test("#24: Feedback never returns to the in-app mail composer")
+    func inAppComposerStaysRemoved() throws {
+        let sources = URL(filePath: #filePath)
+            .deletingLastPathComponent()
+            .appending(path: "../../Sources/SupportKit")
+            .standardizedFileURL
+        let files = try #require(
+            FileManager.default.enumerator(at: sources, includingPropertiesForKeys: nil)
+        )
+        .compactMap { $0 as? URL }
+        .filter { $0.pathExtension == "swift" }
+
+        #expect(files.count > 5)
+        for file in files {
+            let text = try String(contentsOf: file, encoding: .utf8)
+            #expect(!text.contains("MessageUI"), "\(file.lastPathComponent)")
+            #expect(!text.contains("MFMailCompose"), "\(file.lastPathComponent)")
+        }
+    }
+
     @Test("#24: Each mail gets a fresh feedback ID")
     func defaultIDIsRandom() {
         #expect(FeedbackMail(app: app).feedbackID != FeedbackMail(app: app).feedbackID)
